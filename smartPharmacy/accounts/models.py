@@ -15,6 +15,8 @@ class Owner(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone = models.CharField(max_length=11, null=True)
     nationalID = models.CharField(max_length=14)
+    
+    
 
     def __str__(self):
         return self.user.username

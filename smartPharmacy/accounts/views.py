@@ -4,11 +4,10 @@ from .serializers import OwnerSerializer, PharmacySerializer
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
-# Create your views here.
-
 
 class OwnerRegisterView(generics.CreateAPIView):
     serializer_class = OwnerSerializer
+            
 
 
 class PharmacyCreateView(generics.ListCreateAPIView):

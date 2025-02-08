@@ -41,13 +41,17 @@ INSTALLED_APPS = [
     'mapwidgets',
     'accounts',
     'medicine',
+    'search_medicine',
     'rest_framework_simplejwt',
+    'rest_framework_word_filter',
+    'django_filters',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 MIDDLEWARE = [
