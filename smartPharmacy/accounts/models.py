@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from mapwidgets.widgets import GoogleMapPointFieldWidget
+from django.conf import settings
 
 # Create your models
 
@@ -10,7 +10,6 @@ class Owner(models.Model):
         ('M', 'Male'),
         ('F', 'Female')
     ]
-    # name = models.CharField(max_length=50)
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone = models.CharField(max_length=11, null=True)
