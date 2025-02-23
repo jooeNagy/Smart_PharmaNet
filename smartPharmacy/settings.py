@@ -21,16 +21,16 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost', 'smartpharmanet-production.up.railway.
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.railway.app/',
+    'https://smartpharmanet-production.up.railway.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.railway.app/',
+    'https://smartpharmanet-production.up.railway.app',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL")
+CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
 
 # Application definition
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
     'drf_spectacular',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -171,9 +172,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
