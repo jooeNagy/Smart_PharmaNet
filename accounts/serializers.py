@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from datetime import datetime, timezone
 from djoser.serializers import UserCreateSerializer
-
+import logging
 
 User = get_user_model()
 
@@ -24,7 +24,11 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ['id', 'email', 'password', 'first_name', 'last_name']
+        fields = ['id','username', 'email', 'password', 'first_name', 'last_name']
+        extra_kwargs = {
+            'password': {'required': True, 'allow_blank': False, 'min_length': 8, 'write_only':True}
+            }
+
 
 class OwnerSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -32,6 +36,11 @@ class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Owner
         fields = ['user', 'gender','phone', 'nationalID']
+        extra_kwargs = {
+            'gender': {'required': True, 'allow_blank': False},
+            'phone': {'required': True, 'allow_blank': False},
+            'nationalID': {'required': True, 'allow_blank': False},
+        }
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -68,6 +77,8 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
                         'refresh': str(refresh),
                         'access': str(refresh.access_token),
                     }
+                else:
+                    raise serializers.ValidationError('Incorrect Password')
             except User.DoesNotExist:
 
                 raise serializers.ValidationError('No user found with this email.')

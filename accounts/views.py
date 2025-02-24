@@ -9,11 +9,28 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+import logging
 
 
+logger = logging.getLogger(__name__)
 class OwnerRegisterView(generics.CreateAPIView):
     serializer_class = OwnerSerializer
 
+    def create(self, request, *args, **kwargs):
+        logger.info("request data: %s", request.data)
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            logger.error("validation error: %s", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            result = super().create(request, *args, **kwargs)
+            return result
+        except Exception as e:
+            print(f"Exception in create: {e}")
+            import traceback
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class EmailTokenObtainPairView(TokenObtainPairView):
