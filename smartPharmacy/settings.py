@@ -76,7 +76,7 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
         'user_create': 'accounts.serializers.CustomUserCreateSerializer',
-        'user': 'accounts.serializers.UserSerializer'
+        'user': 'accounts.serializers.CustomUserSerializer'
     },
     'PERMISSIONS': {
         'user_list': ['rest_framework.permissions.IsAdminUser']
