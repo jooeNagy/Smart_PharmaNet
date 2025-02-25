@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 import logging
 
 
@@ -60,7 +60,8 @@ class PharmacyCreateView(generics.ListCreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-class CustomLogoutView(APIView):
+class CustomLogoutView(generics.GenericAPIView):
+    # serializer_class = CustomLogoutSerializer
     def post(self, request):
         try:
             refresh = request.data.get('refresh')

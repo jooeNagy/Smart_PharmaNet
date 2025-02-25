@@ -10,7 +10,7 @@ import logging
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username','email', 'password']
@@ -31,7 +31,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class OwnerSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = CustomUserSerializer()
 
     class Meta:
         model = Owner
