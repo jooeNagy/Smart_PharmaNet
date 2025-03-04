@@ -46,7 +46,6 @@ class PharmacyCreateView(generics.ListCreateAPIView):
         user = self.request.user
         try:
             owner = user.owner
-            print(f'Creating Pharmacy for user: {owner}')
             serializer.save(owner=owner)
         except Owner.DoesNotExist:
             raise ValidationError({"details": "User has no associated Owner Account!"})
