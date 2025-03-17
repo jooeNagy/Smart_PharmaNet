@@ -39,8 +39,15 @@ class EmailTokenObtainPairView(TokenObtainPairView):
 
 class PharmacyCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Pharmacy.objects.all()
     serializer_class = PharmacySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            owner = user.owner
+            return Pharmacy.objects.filter(owner=owner)
+        except Owner.DoesNotExist:
+            raise ValidationError({"details": "User has no associated Owner account!"})
 
     def perform_create(self, serializer):
         user = self.request.user
