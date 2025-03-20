@@ -7,48 +7,29 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import Owner, Pharmacy
 
-
-class OwnerPharmacyMixin:
-    def get_owner_and_pharmacy(self, user):
-            try:
-                owner = Owner.objects.get(user=user)
-            except Owner.DoesNotExist:
-                return Response(
-                    {"error": "No Owner Found for the logged-in User"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            pharmacies = owner.pharmacies.all()
-            if not pharmacies:
-                return Response(
-                    {"error": "No Pharmacies found for the logged-in user."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            return owner, pharmacies.first()
-
-
-
-class MedicineCreateReadView(OwnerPharmacyMixin, APIView):
+class MedicineCreateReadView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        
-        medicines = Medicine.objects.filter(pharmacy__in=owner.pharmacies.all())
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        medicines = Medicine.objects.filter(pharmacy=pharmacy)        
         serializer = MedicineSerializer(medicines, many=True)
         return Response(serializer.data)
         
     def post(self,request):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
         data = request.data
-        data['pharmacy'] = response.id
+        data['pharmacy'] = pharmacy.id
 
         serializer = MedicineSerializer(data=data)
         if serializer.is_valid():
@@ -57,10 +38,10 @@ class MedicineCreateReadView(OwnerPharmacyMixin, APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MedicineRetrieveUpdateDestroy(OwnerPharmacyMixin, APIView):
+class MedicineRetrieveUpdateDestroy(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_medicine(self, pk, owner):
+    def get_medicine(self, pk, pharmacy):
         try:
             medicine = Medicine.objects.get(id=pk)
         except Medicine.DoesNotExist:
@@ -68,7 +49,7 @@ class MedicineRetrieveUpdateDestroy(OwnerPharmacyMixin, APIView):
                 {"error": "Medicine not Found"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        if medicine.pharmacy not in owner.pharmacies.all():
+        if medicine.pharmacy != pharmacy:
             return None, Response(
                 {"error": "You do not have permission to access this medicine"},
                 status=status.HTTP_403_FORBIDDEN
@@ -77,23 +58,26 @@ class MedicineRetrieveUpdateDestroy(OwnerPharmacyMixin, APIView):
     
 
     def get(self, request, pk):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        medicine, response = self.get_medicine(pk, owner)
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        medicine, response = self.get_medicine(pk, pharmacy)
         if not medicine:
-            return response
-        
+            return response   
         serializer = MedicineSerializer(medicine)
         return Response(serializer.data)
     
     def put(self, request, pk):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        medicine, response = self.get_medicine(pk, owner)
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        medicine, response = self.get_medicine(pk, pharmacy)
         if not medicine:
             return response
         
@@ -105,11 +89,13 @@ class MedicineRetrieveUpdateDestroy(OwnerPharmacyMixin, APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request, pk):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        medicine, response = self.get_medicine(pk, owner)
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        medicine, response = self.get_medicine(pk, pharmacy)
         if not medicine:
             return response
         
@@ -121,11 +107,13 @@ class MedicineRetrieveUpdateDestroy(OwnerPharmacyMixin, APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
-        user = request.user
-        owner, response = self.get_owner_and_pharmacy(user)
-        if not owner:
-            return response
-        medicine, response = self.get_medicine(pk, owner)
+        pharmacy = request.pharmacy
+        if not pharmacy:
+            return Response(
+                {"error": "You must be logged in as a pharmacy to access this endpoint."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        medicine, response = self.get_medicine(pk, pharmacy)
         if not medicine:
             return response
         

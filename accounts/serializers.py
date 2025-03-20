@@ -51,9 +51,27 @@ class OwnerSerializer(serializers.ModelSerializer):
     
 
 class PharmacySerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(write_only=True, style={"input_type":"password"})
     class Meta:
         model = Pharmacy
-        fields = ['name', 'location', 'license_number']
+        fields = ['id', 'name', 'location', 'license_number', 'password', 'confirm_password']
+        extra_kwargs = {
+            'password': {'write_only': True, 'style':{"input_type":"password"}}
+        }
+    
+    def validate(self,data):
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
+        if password != confirm_password:
+            raise serializers.ValidationError({"confirm_password": "Passwords do not match"})
+        return data
+    
+    def create(self, validated_data):
+        validated_data.pop('confirm_password', None)
+        pharmacy = Pharmacy(**validated_data)
+        pharmacy.set_password(validated_data['password'])
+        pharmacy.save()
+        return pharmacy
      
 
 class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -84,3 +102,22 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
                 raise serializers.ValidationError('No user found with this email.')
             
             raise serializers.ValidationError('Must provide email and password')   
+        
+
+class PharmacyLoginSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+
+    def validate(self, data):
+        name = data.get('name')
+        password = data.get('password')
+
+        try:
+            pharmacy = Pharmacy.objects.get(name=name)
+        except Pharmacy.DoesNotExist:
+            raise serializers.ValidationError({"name": "Not Fount Pharmacy With This Name!"})
+        
+        if not pharmacy.check_password(password):
+            raise serializers.ValidationError({"password": "Incorrect Password"})
+        data['pharmacy'] = pharmacy
+        return data
