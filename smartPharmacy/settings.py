@@ -17,17 +17,17 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost', 'smartpharmanet-production.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1','localhost', '.vercel.app']
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.railway.app',
+    'https://smartpharmanet-production.up.vercel.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.railway.app',
+    'https://smartpharmanet-production.up.vercel.app',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
@@ -138,9 +138,14 @@ WSGI_APPLICATION = 'smartPharmacy.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default=os.getenv("DATABASE_PUBLIC_URL"))
-    )
+    'default': {
+        'ENGINE': config('DB_ENGINE'),
+        'HOST': config('DB_HOST'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'PORT': config('DB_PORT'),
+    }
 }
 
 
