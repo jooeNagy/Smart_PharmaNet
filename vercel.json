@@ -24,7 +24,8 @@
         "env": {
             "PYTHON_VERSION": "3.9",
             "DJANGO_SETTINGS_MODULE": "smartPharmacy.settings",
-            "DISABLE_COLLECTSTATIC": "1"
+            "DISABLE_COLLECTSTATIC": "1",
+            "PG_CONFIG": "false"
         }
     }
 }

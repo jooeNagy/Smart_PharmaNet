@@ -21,13 +21,15 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost', '.vercel.app']
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smart-pharma-net.vercel.app',
+    'https://smart-pharma-hfiy0pv2p-youssefs-projects-c0804607.vercel.app',
+    'https://smart-pharma-net-git-main-youssefs-projects-c0804607.vercel.app'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smart-pharma-net.vercel.app',
+    'https://smart-pharma-hfiy0pv2p-youssefs-projects-c0804607.vercel.app',
+    'https://smart-pharma-net-git-main-youssefs-projects-c0804607.vercel.app'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
@@ -139,7 +141,7 @@ WSGI_APPLICATION = 'smartPharmacy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
+        'ENGINE': 'django.db.backends.postgresql',
         'HOST': config('DB_HOST'),
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
