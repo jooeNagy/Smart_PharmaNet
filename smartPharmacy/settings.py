@@ -155,6 +155,10 @@ DATABASES = {
     }
 }
 
+# Database configuration for Vercel
+if os.environ.get('VERCEL_ENV'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
