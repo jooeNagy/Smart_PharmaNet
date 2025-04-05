@@ -5,7 +5,7 @@
             "src": "smartPharmacy/wsgi.py",
             "use": "@vercel/python",
             "config": {
-                "maxLambdaSize": "15mb",
+                "maxLambdaSize": "20mb",
                 "runtime": "python3.9",
                 "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
             }
@@ -18,18 +18,18 @@
     "routes": [
         {
             "src": "/static/(.*)",
-            "dest": "smartPharmacy/staticfiles/$1"
+            "dest": "/staticfiles/$1",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/admin/static/(.*)",
+            "dest": "/staticfiles/admin/$1"
         },
         {
             "src": "/(.*)",
             "dest": "smartPharmacy/wsgi.py"
         }
-    ],
-    "build": {
-        "env": {
-            "PYTHON_VERSION": "3.9",
-            "DJANGO_SETTINGS_MODULE": "smartPharmacy.settings",
-            "PG_CONFIG": "false"
-        }
-    }
+    ]
 }
