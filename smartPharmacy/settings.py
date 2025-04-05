@@ -21,13 +21,13 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost', '.vercel.app']
 CORS_ALLOWED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.vercel.app',
+    'https://smart-pharma-net.vercel.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'https://localhost:8000',
-    'https://smartpharmanet-production.up.vercel.app',
+    'https://smart-pharma-net.vercel.app',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
