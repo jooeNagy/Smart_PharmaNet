@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'djoser',
     'drf_spectacular',
     'corsheaders',
+    'django_extensions',
 ]
 
 REST_FRAMEWORK = {
@@ -142,18 +143,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'smartPharmacy.wsgi.application'
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': config('DB_HOST'),
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'PORT': config('DB_PORT'),
-#     }
-# }
 
 DATABASES = {
     'default': dj_database_url.config(
