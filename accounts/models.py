@@ -1,8 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.hashers import make_password, check_password
-
+from django.contrib.gis.db import models
 # Create your models
 
 class Owner(models.Model):
@@ -25,7 +24,7 @@ class Owner(models.Model):
 class Pharmacy(models.Model):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='pharmacies')
     name = models.CharField(max_length=100)
-    location = models.CharField(max_length=200)
+    location = models.PointField(geography=True)
     license_number = models.CharField(max_length=50)
     password = models.CharField(max_length=128, null=True, blank=True)
 
