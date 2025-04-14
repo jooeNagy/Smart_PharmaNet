@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'django_extensions',
-    'django.contrib.gis',
 ]
 
 REST_FRAMEWORK = {
