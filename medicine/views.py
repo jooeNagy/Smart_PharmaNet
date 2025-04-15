@@ -17,7 +17,7 @@ class MedicineCreateReadView(APIView):
                 {"error": "You must be logged in as a pharmacy to access this endpoint."},
                 status=status.HTTP_403_FORBIDDEN
             )
-        medicines = Medicine.objects.filter(pharmacy=pharmacy)        
+        medicines = Medicine.objects.filter(pharmacy=pharmacy).select_related('pharmacy')
         serializer = MedicineSerializer(medicines, many=True)
         return Response(serializer.data)
         
