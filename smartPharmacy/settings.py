@@ -4,6 +4,7 @@ import dj_database_url
 from decouple import config
 import os
 from dotenv import load_dotenv
+import pytesseract
 
 load_dotenv()
 
@@ -39,6 +40,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SECURE_SSL_REDIRECT = True
 
+PYTESSERACT_PATH = 'tesseract'
 # Application definition
 
 INSTALLED_APPS = [
