@@ -1,6 +1,6 @@
 from django.urls import path
 # from .views import UserListView
-from .views import OwnerSearchView, MedicineImageSearchView
+from .views import OwnerSearchView
 
 
 

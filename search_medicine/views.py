@@ -2,11 +2,8 @@ from django.shortcuts import render
 from medicine.models import Medicine
 from rest_framework import generics, filters, status
 from medicine.serializers import MedicineSerializer
-from rest_framework.generics import GenericAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import SearchFilter
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
 
 
 
