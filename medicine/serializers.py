@@ -6,7 +6,8 @@ class MedicineSerializer(serializers.ModelSerializer):
     pharmacy_location = serializers.SerializerMethodField()
     class Meta:
         model = Medicine
-        fields = ['id', 'name', 'category', 'description', 'price', 'quantity', 'exp_date', 'pharmacy', 'pharmacy_location']
+        fields = '__all__'
+        # fields = ['id', 'name', 'category', 'description', 'price', 'quantity', 'exp_date', 'pharmacy', 'can_be_sell', 'quantity_to_sell', 'price_sell']
         read_only_fields = ['pharmacy_location']
         
     def get_pharmacy_location(self, obj):
@@ -23,3 +24,17 @@ class MedicineSerializer(serializers.ModelSerializer):
         if value <= date.today():
             raise serializers.ValidationError("Expiration Date must be a Future Date")
         return value
+    
+    def validate(self, data):
+        if data.get('can_be_sell') and data.get('quantity_to_sell') is None:
+            raise serializers.ValidationError({
+                "quantity_to_sell": "This field is required when can_be_sell is True"
+            })
+        
+        if data.get('quantity_to_sell') is not None and data.get('quantity') is not None:
+            if data['quantity_to_sell'] > data['quantity']:
+                raise serializers.ValidationError({
+                    "quantity_to_sell": "Cannot exceed available quantity"
+                })
+        
+        return data

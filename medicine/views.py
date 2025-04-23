@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import Owner, Pharmacy
-
 class MedicineCreateReadView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -36,7 +35,7 @@ class MedicineCreateReadView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 
 class MedicineRetrieveUpdateDestroy(APIView):
     permission_classes = [IsAuthenticated]
