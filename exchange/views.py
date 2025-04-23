@@ -6,6 +6,8 @@ from medicine.serializers import MedicineSerializer
 from .serializers import ExchangeMedcieneSerializer
 # from  ExchangeMedcieneSerializer
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
+
 from django.shortcuts import get_object_or_404  # ✅ Import added
 from rest_framework.response import Response
 
@@ -65,3 +67,4 @@ class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
+    permission_classes = [IsAuthenticated]
