@@ -1,15 +1,16 @@
 from rest_framework import serializers
 from .models import Medicine
 from datetime import date
+from drf_spectacular.utils import extend_schema_field
 
 class MedicineSerializer(serializers.ModelSerializer):
     pharmacy_location = serializers.SerializerMethodField()
     class Meta:
         model = Medicine
         fields = '__all__'
-        # fields = ['id', 'name', 'category', 'description', 'price', 'quantity', 'exp_date', 'pharmacy', 'can_be_sell', 'quantity_to_sell', 'price_sell']
         read_only_fields = ['pharmacy_location']
         
+    @extend_schema_field(serializers.CharField)
     def get_pharmacy_location(self, obj):
         if not obj.pharmacy:
             return None

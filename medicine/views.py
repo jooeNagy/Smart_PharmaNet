@@ -6,9 +6,14 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import Owner, Pharmacy
-class MedicineCreateReadView(APIView):
-    permission_classes = [IsAuthenticated]
+from drf_spectacular.utils import extend_schema
+from accounts.authentication import PharmacyJWTAuthentication
 
+class MedicineCreateReadView(APIView):
+    authentication_classes = [PharmacyJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = MedicineSerializer
+    
     def get(self, request):
         pharmacy = request.pharmacy
         if not pharmacy:
@@ -19,7 +24,7 @@ class MedicineCreateReadView(APIView):
         medicines = Medicine.objects.filter(pharmacy=pharmacy).select_related('pharmacy')
         serializer = MedicineSerializer(medicines, many=True)
         return Response(serializer.data)
-        
+           
     def post(self,request):
         pharmacy = request.pharmacy
         if not pharmacy:
@@ -39,6 +44,7 @@ class MedicineCreateReadView(APIView):
 
 class MedicineRetrieveUpdateDestroy(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = MedicineSerializer
 
     def get_medicine(self, pk, pharmacy):
         try:
