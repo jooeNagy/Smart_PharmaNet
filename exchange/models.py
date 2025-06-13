@@ -1,5 +1,5 @@
 from django.db import models
-
+from medicine.models import Medicine
 class ExchangeMedciene(models.Model):
     class Status(models.TextChoices):
         SELL = 'Sell'
@@ -15,3 +15,17 @@ class ExchangeMedciene(models.Model):
 
     def __str__(self):
         return f"{self.medicine.name} - {self.operation} ({self.quantity})"
+    
+    
+class Order_exchange(models.Model):
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    quantity = models.IntegerField(null=False, blank=False, default=1)
+    # pharmacy_buyer = models.ForeignKey('accounts.Pharmacy', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Order {self.id} - {self.medicine.name} ({self.quantity})"
+
+    
