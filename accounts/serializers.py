@@ -27,7 +27,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         fields = ['id','username', 'email', 'password', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {'required': True, 'allow_blank': False, 'min_length': 8, 'write_only':True}
-            }
+            }   
 
 
 class OwnerSerializer(serializers.ModelSerializer):

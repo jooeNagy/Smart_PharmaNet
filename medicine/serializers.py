@@ -31,11 +31,18 @@ class MedicineSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 "quantity_to_sell": "This field is required when can_be_sell is True"
             })
-        
+
         if data.get('quantity_to_sell') is not None and data.get('quantity') is not None:
             if data['quantity_to_sell'] > data['quantity']:
                 raise serializers.ValidationError({
                     "quantity_to_sell": "Cannot exceed available quantity"
                 })
+
+        if data.get('quantity_to_buy') is not None and data.get('quantity_to_sell') is not None:
+            if data['quantity_to_buy'] > data['quantity_to_sell']:
+                raise serializers.ValidationError({
+                    "quantity_to_buy": "Cannot exceed available quantity to sell"
+                })
+        
         
         return data
