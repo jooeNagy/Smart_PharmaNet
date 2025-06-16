@@ -24,8 +24,8 @@ class Medicine(models.Model):
     quantity_to_sell = models.IntegerField(null=True, blank=True)  # Fixed: Added blank=True
     price_sell = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
     
-    Buy = models.BooleanField(null=True, default=False)
-    quantity_to_Buy = models.IntegerField(null=True, blank=False)  # Fixed: Added blank=True
+    # Buy = models.BooleanField(null=True, default=False)
+    # quantity_to_Buy = models.IntegerField(null=True, blank=False)  # Fixed: Added blank=True
     
     
     def __str__(self):
@@ -74,28 +74,28 @@ class Medicine(models.Model):
                 })
             
         
-        if not self.Buy:
-            ExchangeMedciene.objects.filter(
-                medicine=self,
-                operation=ExchangeMedciene.Status.BUY
-            ).delete()
-        else:
-            if self.quantity_to_Buy <= self.quantity_to_sell:
-                self.quantity -= self.quantity_to_Buy
-                self.quantity_to_sell -= self.quantity_to_Buy
-                self.save()
-                Order_exchange.objects.update_or_create(
-                    medicine=self,
-                    # pharmacy_buyer='',
-                    defaults={
-                        'quantity': self.quantity_to_Buy,
-                        'status': 'Pending',
-                    }
-                )
-            else:
-                raise serializers.ValidationError({
-                    "quantity_to_buy": "Cannot exceed available quantity to sell"
-                })
+        # if not self.Buy:
+        #     ExchangeMedciene.objects.filter(
+        #         medicine=self,
+        #         operation=ExchangeMedciene.Status.BUY
+        #     ).delete()
+        # else:
+        #     if self.quantity_to_Buy <= self.quantity_to_sell:
+        #         self.quantity -= self.quantity_to_Buy
+        #         self.quantity_to_sell -= self.quantity_to_Buy
+        #         self.save()
+        #         Order_exchange.objects.update_or_create(
+        #             medicine=self,
+        #             # pharmacy_buyer='',
+        #             defaults={
+        #                 'quantity': self.quantity_to_Buy,
+        #                 'status': 'Pending',
+        #             }
+        #         )
+        #     else:
+        #         raise serializers.ValidationError({
+        #             "quantity_to_buy": "Cannot exceed available quantity to sell"
+        #         })
             
 
 

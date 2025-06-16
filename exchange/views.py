@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from .models import ExchangeMedciene
+from .models import ExchangeMedciene, Buy_Order
 from medicine.models import *
 from medicine.serializers import MedicineSerializer
 
-from .serializers import ExchangeMedcieneSerializer
+from .serializers import ExchangeMedcieneSerializer, BuyOrderMedcieneSerializer,BuyOrder_update_status_Serializer
 # from  ExchangeMedcieneSerializer
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
@@ -12,59 +12,42 @@ from django.shortcuts import get_object_or_404  # ✅ Import added
 from rest_framework.response import Response
 
 
-# class SellMedicineView(generics.CreateAPIView):
-#     serializer_class = ExchangeMedcieneSerializer
-
-#     def post(self, request, pk, *args, **kwargs):
-        
-#         medicine = get_object_or_404(Medicine, pk=pk)
-#         quantity = request.data.get("quantity")
-
-#         if not quantity or int(quantity) <= 0:
-#             return Response({"error": "Invalid quantity"}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if medicine.quantity < int(quantity):
-#             return Response({"error": "Not enough stock available"}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # Reduce medicine stock
-#         medicine.quantity -= int(quantity)
-#         medicine.save()
-
-#         # Create ExchangeMedciene record
-#         exchange = ExchangeMedciene.objects.create(
-#             operation="Sell",
-#             medicine=medicine,
-#             quantity=int(quantity)
-#         )
-
-#         return Response(ExchangeMedcieneSerializer(exchange).data, status=status.HTTP_201_CREATED)
-
-
-
-
-# testing another idea
 class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
 
-
-
-# def add_to_sell(request, pk):
-#     medicine = get_object_or_404(Medicine, pk=pk)
-#     if medicine.can_be_sell == 'False':
-#         medicine.can_be_sell = 'True'
-#         medicine.save()
-        
-#     if ExchangeMedciene.objects.filter(medicine=medicine).exists():
-#         return Response(status=status.HTTP_302_FOUND)
-#     else:
-#         ExchangeMedciene.objects.create(medicine=medicine)
-#         ExchangeMedciene.save()
-    
-#     return Response(status=status.HTTP_201_CREATED)
-
-
+from accounts.authentication import PharmacyJWTAuthentication
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
     permission_classes = [IsAuthenticated]
+
+
+class Get_BuyOrderMedicineView(generics.ListAPIView):  
+    serializer_class = BuyOrderMedcieneSerializer  
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+
+    def get_queryset(self):
+        """Return all orders for the current pharmacy seller"""
+        return Buy_Order.objects.filter(pharmacy_seller=self.request.user)
+
+class create_BuyOrderMedicineView(generics.CreateAPIView):
+    queryset = Buy_Order.objects.all()
+    serializer_class = BuyOrderMedcieneSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+    
+
+class Notification_updatestatusView(generics.UpdateAPIView):
+    queryset = Buy_Order.objects.all()
+    serializer_class = BuyOrder_update_status_Serializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+
+    def get_object(self):
+        order = super().get_object()
+        # Verify the current user is the pharmacy seller
+        if order.pharmacy_seller != self.request.user:
+            raise PermissionDenied("You can only update orders for your own pharmacy")
+        return order
