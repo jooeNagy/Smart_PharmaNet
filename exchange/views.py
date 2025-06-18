@@ -3,7 +3,7 @@ from .models import ExchangeMedciene, Buy_Order
 from medicine.models import *
 from medicine.serializers import MedicineSerializer
 
-from .serializers import ExchangeMedcieneSerializer, BuyOrderMedcieneSerializer,BuyOrder_update_status_Serializer
+from .serializers import ExchangeMedcieneSerializer, Create_BuyOrderMedcieneSerializer, Get_orders_toseller_OrderMedcieneSerializer,BuyOrder_update_status_Serializer
 # from  ExchangeMedcieneSerializer
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
@@ -24,7 +24,7 @@ class ExchangeMedicineView(generics.ListAPIView):
 
 
 class Get_BuyOrderMedicineView(generics.ListAPIView):  
-    serializer_class = BuyOrderMedcieneSerializer  
+    serializer_class = Get_orders_toseller_OrderMedcieneSerializer  
     permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
 
@@ -33,12 +33,12 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
 
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     queryset = Buy_Order.objects.all()
-    serializer_class = BuyOrderMedcieneSerializer
+    serializer_class = Create_BuyOrderMedcieneSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
     
 
-class Notification_updatestatusView(generics.UpdateAPIView):
+class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
     queryset = Buy_Order.objects.all()
     serializer_class = BuyOrder_update_status_Serializer
     permission_classes = [IsAuthenticated]

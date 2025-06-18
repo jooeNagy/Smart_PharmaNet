@@ -36,13 +36,11 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
                 {"quantity": "Exceeds available exchange quantity."}
             )
         return data
-
-class BuyOrderMedcieneSerializer(serializers.ModelSerializer):
+class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Buy_Order
-        fields = '__all__'
-        # fields = ['price', 'medicine_name', 'quantity', 'pharmacy_buyer', 'status', 'created_at', 'updated_at']
+        fields = ['medicine_name','price', 'quantity', 'pharmacy_seller', 'status', 'created_at', 'updated_at']
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -50,13 +48,36 @@ class BuyOrderMedcieneSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-        medicine = data.get("medicine")
+        medicine = data.get("medicine_name")
         quantity = data.get("quantity")
 
-        if medicine.quantity_to_sell < quantity:  # ✅ Check exchange stock
-            raise serializers.ValidationError(
-                {"quantity": "Exceeds available exchange quantity."}
-            )
+        if medicine and hasattr(medicine, 'quantity_to_sell'):
+            if quantity > medicine.quantity_to_sell:
+                raise serializers.ValidationError(
+                    {"quantity": "Exceeds available exchange quantity."}
+                )
+        return data
+
+class Get_orders_toseller_OrderMedcieneSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Buy_Order
+        fields = ['medicine_name','price', 'quantity', 'pharmacy_buyer', 'status', 'created_at', 'updated_at']
+
+    def validate_quantity(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Quantity must be greater than zero.")
+        return value
+
+    def validate(self, data):
+        medicine = data.get("medicine_name")
+        quantity = data.get("quantity")
+
+        if medicine and hasattr(medicine, 'quantity_to_sell'):
+            if quantity > medicine.quantity_to_sell:
+                raise serializers.ValidationError(
+                    {"quantity": "Exceeds available exchange quantity."}
+                )
         return data
     
 class BuyOrder_update_status_Serializer(serializers.ModelSerializer):

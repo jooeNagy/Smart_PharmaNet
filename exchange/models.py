@@ -31,17 +31,16 @@ class ExchangeMedciene(models.Model):
         
 class Buy_Order(models.Model):
     
-    class Status(models.TextChoices):
-        Pending = 'Pending'
-        Accepted = 'Accepted'
-        Rejected = 'Rejected'
+    class Choices(models.TextChoices):
+        PENDING = 'Pending'
+        COMPLETED = 'Completed'
+        CANCELLED = 'Cancelled'
     
-    medicine_name = models.CharField(max_length=100, null=True)
-    quantity = models.IntegerField(null=False, blank=False, default=1)
-    price = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
-    pharmacy_seller = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, null=False, blank=False)
-    status = models.CharField(max_length=20, default='Pending', choices=Status.choices)
+    medicine_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    pharmacy_seller = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_sold")
+    pharmacy_buyer = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_bought", null=True, blank=True)
+    status = models.CharField(max_length=50, choices=Choices.choices, default=Choices.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    def __str__(self):
-        return f"Order {self.id} - {self.medicine_name} ({self.quantity})"
