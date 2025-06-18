@@ -29,7 +29,6 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
-        """Return all orders for the current pharmacy seller"""
         return Buy_Order.objects.filter(pharmacy_seller=self.request.user)
 
 class create_BuyOrderMedicineView(generics.CreateAPIView):
