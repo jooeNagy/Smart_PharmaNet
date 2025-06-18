@@ -15,8 +15,7 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
     pharmacy_latitude = serializers.CharField(source= 'medicine.pharmacy.latitude', read_only=True)
     pharmacy_longitude = serializers.CharField(source= 'medicine.pharmacy.longitude', read_only=True)
     
-    
-    
+
     
     class Meta:
         model = ExchangeMedciene
