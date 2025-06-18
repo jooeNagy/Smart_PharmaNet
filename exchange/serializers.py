@@ -37,10 +37,12 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
             )
         return data
 class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
-
+    seller = serializers.CharField(source='Buy_order.pharmacy_seller.name')
+    med_name = serializers.CharField(source='Buy_order.medicine_name.name')
+    
     class Meta:
         model = Buy_Order
-        fields = ['medicine_name','price', 'quantity', 'pharmacy_seller', 'status', 'created_at', 'updated_at']
+        fields = ['med_name','price', 'quantity', 'seller', 'status', 'created_at', 'updated_at']
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -48,7 +50,7 @@ class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-        medicine = data.get("medicine_name")
+        medicine = data.get("med_name")
         quantity = data.get("quantity")
 
         if medicine and hasattr(medicine, 'quantity_to_sell'):
