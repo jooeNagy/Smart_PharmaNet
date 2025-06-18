@@ -41,6 +41,6 @@ class Buy_Order(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pharmacy_seller = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_sold")
     pharmacy_buyer = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_bought", null=True, blank=True)
-    status = models.CharField(max_length=50, choices=Choices.choices, default=Choices.PENDING)
+    status = models.CharField(max_length=50, choices=Choices.choices, default=Choices.PENDING, null=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
