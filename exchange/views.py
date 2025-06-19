@@ -26,15 +26,15 @@ class ExchangeMedicineView(generics.ListAPIView):
 class Get_BuyOrderMedicineView(generics.ListAPIView):  
     queryset = Buy_Order.objects.all()
     serializer_class = Get_orders_toseller_OrderMedcieneSerializer  
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
 
-    # def get_queryset(self):
-    #     return Buy_Order.objects.filter(pharmacy_seller=self.request.user)
+    def get_queryset(self):
+        return Buy_Order.objects.filter(pharmacy_seller=self.request.user)
 
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
     
 
