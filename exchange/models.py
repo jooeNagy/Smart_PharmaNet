@@ -36,7 +36,7 @@ class Buy_Order(models.Model):
         COMPLETED = 'Completed'
         CANCELLED = 'Cancelled'
     
-    medicine_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True, blank=True)
+    medicine_name = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pharmacy_seller = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_sold")
