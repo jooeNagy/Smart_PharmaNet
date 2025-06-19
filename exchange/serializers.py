@@ -70,7 +70,7 @@ class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
         return data
 
 class Get_orders_toseller_OrderMedcieneSerializer(serializers.ModelSerializer):
-    med_name = serializers.CharField(source='medicine_name', read_only=True)
+    med_name = serializers.CharField(source='medicine_name.name', read_only=True)
     pharma_buyer = serializers.CharField(source='pharmacy_buyer.name', read_only=True)
     class Meta:
         model = Buy_Order
