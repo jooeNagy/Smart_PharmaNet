@@ -30,7 +30,7 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
-        return Buy_Order.objects.filter(pharmacy_seller=self.request.user)
+        return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy.name)
 
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
