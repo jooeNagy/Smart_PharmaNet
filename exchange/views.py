@@ -1,11 +1,8 @@
 from django.shortcuts import render, get_object_or_404  
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
-<<<<<<< HEAD
-=======
 
 from django.shortcuts import get_object_or_404  # ✅ Import added
->>>>>>> a3f170d8defc9b5a1afa13910d422b48c8fb49eb
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
@@ -43,14 +40,11 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
-<<<<<<< HEAD
         if not self.request.pharmacy:
             raise PermissionDenied("Authenticated pharmacy not found.")
         return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy)
-=======
-        return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy.name)
->>>>>>> a3f170d8defc9b5a1afa13910d422b48c8fb49eb
 
+        
 
 # 📝 Create a New Buy Order
 class create_BuyOrderMedicineView(generics.CreateAPIView):
