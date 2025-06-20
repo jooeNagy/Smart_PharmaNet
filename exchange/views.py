@@ -40,9 +40,11 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
+        pharmacy = getattr(self.request, "pharmacy", None)
+
         if not self.request.pharmacy:
             raise PermissionDenied("Authenticated pharmacy not found.")
-        return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy)
+        return Buy_Order.objects.filter(pharmacy_seller=pharmacy)
 
         
 
