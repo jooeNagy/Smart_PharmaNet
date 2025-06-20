@@ -42,8 +42,10 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     def get_queryset(self):
         pharmacy = getattr(self.request, "pharmacy", None)
 
-        if not self.request.pharmacy:
-            raise PermissionDenied("Authenticated pharmacy not found.")
+        if not pharmacy:
+            raise PermissionDenied("You must be authenticated as a pharmacy to view orders.")
+        elif Buy_Order.objects.filter(pharmacy_seller=pharmacy).count() == 0:
+            raise PermissionDenied("No orders found for this pharmacy.")
         return Buy_Order.objects.filter(pharmacy_seller=pharmacy)
 
         
