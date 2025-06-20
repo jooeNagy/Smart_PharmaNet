@@ -8,7 +8,7 @@ from .serializers import ExchangeMedcieneSerializer, Create_BuyOrderMedcieneSeri
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 
-from django.shortcuts import get_object_or_404  
+from django.shortcuts import get_object_or_404  # ✅ Import added
 from rest_framework.response import Response
 
 
@@ -30,7 +30,7 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
-        return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy.id)
+        return Buy_Order.objects.filter(pharmacy_seller=self.request.pharmacy.name)
 
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
