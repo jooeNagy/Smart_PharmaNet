@@ -8,7 +8,7 @@ urlpatterns = [
         path('get/pharmcy_seller/orders', Get_BuyOrderMedicineView.as_view()),
         path('buy/order', create_BuyOrderMedicineView.as_view()),
         
-        path('update_status/', Notification_updatestatusView.as_view()),
+        path('update_status/<int:pk>', Notification_updatestatusView.as_view()),
         
         
 ]

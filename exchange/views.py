@@ -66,8 +66,9 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         order = super().get_object()
-        if not self.request.pharmacy:
+        pharmacy = getattr(self.request, "pharmacy", None)
+        if not pharmacy:
             raise PermissionDenied("Authenticated pharmacy not found.")
-        if order.pharmacy_seller != self.request.pharmacy:
+        if order.pharmacy_seller != pharmacy:
             raise PermissionDenied("You can only update orders for your own pharmacy.")
         return order
