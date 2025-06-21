@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ExchangeMedicineView,Get_BuyOrderMedicineView ,create_BuyOrderMedicineView, Notification_updatestatusView
+from .views import ExchangeMedicineView,Get_BuyOrderMedicineView , Notification_View,create_BuyOrderMedicineView, Notification_updatestatusView
 
 
 
@@ -9,6 +9,6 @@ urlpatterns = [
         path('buy/order', create_BuyOrderMedicineView.as_view()),
         
         path('update_status/<int:pk>', Notification_updatestatusView.as_view()),
-        
+        path('get_notification/', Notification_View.as_view()),
         
 ]

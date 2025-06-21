@@ -6,12 +6,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
-from .models import ExchangeMedciene, Buy_Order
+from .models import ExchangeMedciene, Buy_Order, Notification
 from .serializers import (
     ExchangeMedcieneSerializer,
     Create_BuyOrderMedcieneSerializer,
     Get_orders_toseller_OrderMedcieneSerializer,
-    BuyOrder_update_status_Serializer
+    BuyOrder_update_status_Serializer,
+    NotificatoinSerializer
 )
 
 from medicine.models import Medicine
@@ -72,3 +73,57 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
         if order.pharmacy_seller != pharmacy:
             raise PermissionDenied("You can only update orders for your own pharmacy.")
         return order
+    
+    
+    def perform_update(self, serializer):
+        # Capture current status before update
+        old_status = self.get_object().status
+        # Save the updated order
+        order = serializer.save()
+        # Create notification for buyer if status changed
+        if old_status != 'Pending':
+            self.create_notification(order, old_status)
+
+    def create_notification(self, order, old_status):
+        """Create notification for buyer when status changes"""
+        message = (
+            f"Your Order #{order.medicine_name.name} from {order.pharmacy_seller.name} pharmacy status changed: "
+            f"{old_status} → {order.status}"
+        )
+        
+        notification = Notification.objects.create(
+            pharmacy=order.pharmacy_buyer,  # Set pharmacy to buyer
+            order=order,
+            message=message
+        )
+        
+        # print(f"Notification created: ID {notification.id}")
+        return notification
+    
+    
+class Notification_View(generics.ListAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificatoinSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+
+    def get_queryset(self):
+        pharma_req = getattr(self.request, "pharmacy", None)
+
+        if not pharma_req:
+            raise PermissionDenied("You must be authenticated as a pharmacy to view orders.")
+        
+        if Notification.objects.filter(pharmacy=pharma_req).count() == 0:
+            raise PermissionDenied("No Notifications found for this pharmacy.")
+        
+        return Notification.objects.filter(pharmacy=pharma_req)
+
+        
+
+    
+    
+    
+    
+    
+    
+    

@@ -103,3 +103,11 @@ class UpdateMedicineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicine
         fields = ['can_be_sell', 'quantity_to_sell']
+        
+        
+class NotificatoinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
+        
+    

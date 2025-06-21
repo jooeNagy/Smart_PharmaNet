@@ -32,3 +32,11 @@ class Buy_Order(models.Model):
     status = models.CharField(max_length=50, choices=Choices.choices, default=Choices.PENDING, null=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Notification(models.Model):
+        
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)  # Your current approach
+    order = models.ForeignKey(Buy_Order, on_delete=models.CASCADE, null=True, blank=True)
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
