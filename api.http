@@ -28,8 +28,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ###
 
-
-
 PATCH https://127.0.0.1:8000/exchange/update_status/47 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNDQ3OTUyLCJpYXQiOjE3NTA0NDcwNTIsImp0aSI6ImI0MzhhYTllMmM1MzRmNzI4ZmVmZDM2NTFlN2JiOTkyIiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.xr9SGSW_4DkL_QdZL0Q89BB8nFNsGO9MSeQymCg3Ik0
