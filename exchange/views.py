@@ -118,12 +118,5 @@ class Notification_View(generics.ListAPIView):
         
         return Notification.objects.filter(pharmacy=pharma_req)
 
-        
-
-    
-    
-    
-    
-    
-    
+  
     
