@@ -74,7 +74,7 @@ class Get_orders_toseller_OrderMedcieneSerializer(serializers.ModelSerializer):
     pharma_buyer = serializers.CharField(source='pharmacy_buyer.name', read_only=True)
     class Meta:
         model = Buy_Order
-        fields = ['med_name','price', 'quantity', 'pharma_buyer',  'status', 'created_at', 'updated_at']
+        fields = ['pk', 'med_name','price', 'quantity', 'pharma_buyer',  'status', 'created_at', 'updated_at']
 
     def validate_quantity(self, value):
         if value <= 0:

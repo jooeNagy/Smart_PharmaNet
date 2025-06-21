@@ -17,7 +17,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET https://127.0.0.1:8000/exchange/get/pharmcy_seller/orders HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNDQ3OTUyLCJpYXQiOjE3NTA0NDcwNTIsImp0aSI6ImI0MzhhYTllMmM1MzRmNzI4ZmVmZDM2NTFlN2JiOTkyIiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.xr9SGSW_4DkL_QdZL0Q89BB8nFNsGO9MSeQymCg3Ik0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNTA4MjA2LCJpYXQiOjE3NTA1MDczMDYsImp0aSI6ImFlN2I1NTY1MjEwNzQ0YTFiNmFiN2I4NzUxODU2NzY2IiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.Z-jH5TFu4w10-wFWGyIS-rAMN4JKDlykBaFhH8oF0yY
+
+
 ###
 
 GET https://smart-pharma-net.vercel.app/exchange/get/pharmcy_seller/orders HTTP/1.1
@@ -39,7 +41,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ###
 
-POST  https://smart-pharma-net.vercel.app/account/pharmacy/login/ HTTP/1.1
+POST  https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
 Content-Type: application/json
 
 {
