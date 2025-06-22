@@ -10,6 +10,7 @@ urlpatterns = [
     path('medicine/', include('medicine.urls')),
     path('account/', include('accounts.urls')),
     path('search_medicine/', include('search_medicine.urls')),
+    path('chat/', include('aichat.urls')),
     path('exchange/', include('exchange.urls')),
     path(r'auth/', include('djoser.urls')),
     path(r'auth/', include('djoser.urls.jwt')),
