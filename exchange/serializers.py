@@ -3,8 +3,6 @@ from medicine.models import *
 from .models import *
 
 
-
-
 class ExchangeMedcieneSerializer(serializers.ModelSerializer):
     
     medicine_name = serializers.CharField(source= 'medicine.name', read_only=True)
