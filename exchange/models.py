@@ -54,4 +54,3 @@ class Subscription(models.Model):
     type = models.CharField(max_length=50, choices=Choices.choices, default=Choices.FREE, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-   
