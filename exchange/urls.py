@@ -12,5 +12,5 @@ urlpatterns = [
         path('get_notification/', Notification_View.as_view()),
         
         
-        path('subscribe/', SubscriptionView.as_view()),       
+        path('subscripe/', SubscriptionView.as_view()),       
 ]
