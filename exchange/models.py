@@ -40,3 +40,18 @@ class Notification(models.Model):
     order = models.ForeignKey(Buy_Order, on_delete=models.CASCADE, null=True, blank=True)
     message = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    
+class Subscription(models.Model):
+    
+    class Choices(models.TextChoices):
+        FREE = 'Free'
+        PRO = 'Pro'
+        MAX = 'Max'
+        
+    
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
+    type = models.CharField(max_length=50, choices=Choices.choices, default=Choices.FREE, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+   

@@ -6,13 +6,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
-from .models import ExchangeMedciene, Buy_Order, Notification
+from .models import ExchangeMedciene, Buy_Order, Notification, Subscription
 from .serializers import (
     ExchangeMedcieneSerializer,
     Create_BuyOrderMedcieneSerializer,
     Get_orders_toseller_OrderMedcieneSerializer,
     BuyOrder_update_status_Serializer,
-    NotificatoinSerializer
+    NotificatoinSerializer,
+    SubscriptionSerializer
 )
 
 from medicine.models import Medicine
@@ -119,4 +120,9 @@ class Notification_View(generics.ListAPIView):
         return Notification.objects.filter(pharmacy=pharma_req)
 
   
+class SubscriptionView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+
     
