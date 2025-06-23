@@ -112,8 +112,13 @@ class NotificatoinSerializer(serializers.ModelSerializer):
         
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    
+    pharmacy = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Pharmacy.objects.all()
+    )
     class Meta:
         model = Subscription
-        fields = '__all__'
+        fields = ['pharmacy', 'type', 'created_at']
             
     

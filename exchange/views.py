@@ -122,7 +122,7 @@ class Notification_View(generics.ListAPIView):
   
 class SubscriptionView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [PharmacyJWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [PharmacyJWTAuthentication]
 
     
