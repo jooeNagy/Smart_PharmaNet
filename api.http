@@ -1,15 +1,14 @@
 POST https://127.0.0.1:8000/exchange/buy/order HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNDQ3OTUyLCJpYXQiOjE3NTA0NDcwNTIsImp0aSI6ImI0MzhhYTllMmM1MzRmNzI4ZmVmZDM2NTFlN2JiOTkyIiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.xr9SGSW_4DkL_QdZL0Q89BB8nFNsGO9MSeQymCg3Ik0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwODY1ODk3LCJpYXQiOjE3NTA4NjQ5OTcsImp0aSI6IjU2NWI4YzNjMmI3NDQ5YTdiYmUxN2RlODlhZTE4NjE3IiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiNDAifQ.P15oRf5vOTabyml7chhOHkaSqgln852Dk9hpnQg-5nE
 
 
 {
 
-    "medicine_name": "Panadol Extra",
+    "medicine_name": "kohol",
     "quantity": 3,
     "pharmacy_seller": "العطا",
     "pharmacy_buyer": "elhamdy",
-    "status": "Cancelled",
     "price": 50.0
 }
 
@@ -17,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET https://127.0.0.1:8000/exchange/get/pharmcy_seller/orders HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNTQxNzE5LCJpYXQiOjE3NTA1NDA4MTksImp0aSI6IjJmNGFhNmZkMmIxMDRmMjQ4NjE2MDExZDFhODcwZDgwIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.KTVkndMlIm7tZlU7X2-w0fYl7GzW8kK-ZPXCGevuGOo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwODY1OTUxLCJpYXQiOjE3NTA4NjUwNTEsImp0aSI6IjMxMjNkMWIxYjkzZjQ1ODBiZmFmN2U0NmJiNTQxZjMxIiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.gvR2HEIj7GUOOPy3w4B9rPruxXX5rw5TSlWGtwN_kBc
 
 
 ###
@@ -28,12 +27,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ###
 
-PATCH https://127.0.0.1:8000/exchange/update_status/44 HTTP/1.1
+PATCH https://127.0.0.1:8000/exchange/update_status/147 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNTQxNzE5LCJpYXQiOjE3NTA1NDA4MTksImp0aSI6IjJmNGFhNmZkMmIxMDRmMjQ4NjE2MDExZDFhODcwZDgwIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.KTVkndMlIm7tZlU7X2-w0fYl7GzW8kK-ZPXCGevuGOo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwODY1OTUxLCJpYXQiOjE3NTA4NjUwNTEsImp0aSI6IjMxMjNkMWIxYjkzZjQ1ODBiZmFmN2U0NmJiNTQxZjMxIiwidXNlcl9pZCI6MywicGhhcm1hY3lfaWQiOiIyIn0.gvR2HEIj7GUOOPy3w4B9rPruxXX5rw5TSlWGtwN_kBc
 
 {
-    "status": "Cancelled"
+    "status": "Completed"
 }
 
 ###
@@ -52,18 +51,19 @@ Content-Type: application/json
 ###
 
 
-GET https://127.0.0.1:8000/exchange/get_notification HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwNTQxODA4LCJpYXQiOjE3NTA1NDA5MDgsImp0aSI6ImQ2YTFkMDFmY2VkYzQ5NTE4YzQ3NDI3YzY0M2QwNWNhIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiNDAifQ.ZY5argAEbBwaY4OjfUKX55_BgswSvZqdcECOIilhWpk
-
-
-###
-
-POST  https://127.0.0.1:8000/account/owner/login/ HTTP/1.1
+POST  https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
 Content-Type: application/json
 
 {
 
-   "email":"",
+   "name": "العطا",
     "password": "123"
 }
+
+
+###
+
+
+GET https://127.0.0.1:8000/exchange/get_notification HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUwODY2MDI0LCJpYXQiOjE3NTA4NjUxMjQsImp0aSI6IjM2ZDgxMzM1NTVkYzRhOTdiOTg5YjZlNmIyZTQ1YTVkIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiNDAifQ.QJaC7gcz75qx4JKINWD2KAoCSe0vOPMaTK9ubYf8aNI

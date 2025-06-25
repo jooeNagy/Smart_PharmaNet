@@ -82,7 +82,7 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
         # Save the updated order
         order = serializer.save()
         # Create notification for buyer if status changed
-        if old_status != 'Pending':
+        if old_status != order.status:
             self.create_notification(order, old_status)
 
     def create_notification(self, order, old_status):
