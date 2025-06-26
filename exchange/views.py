@@ -32,7 +32,7 @@ class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
@@ -55,8 +55,8 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
 # 📝 Create a New Buy Order
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [PharmacyJWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [PharmacyJWTAuthentication]
 
 
 # 🔔 Update Buy Order Status
@@ -81,6 +81,10 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
         old_status = self.get_object().status
         # Save the updated order
         order = serializer.save()
+        
+        #  Apply quantity changes if status changed to COMPLETED
+        self.update_order(order)
+        
         # Create notification for buyer if status changed
         if old_status != order.status:
             self.create_notification(order, old_status)
@@ -97,10 +101,39 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
             order=order,
             message=message
         )
+    
         
-        # print(f"Notification created: ID {notification.id}")
         return notification
     
+    def update_order(self, order):
+        """Update order and adjust medicine quantities"""
+    
+
+        if order.status == Buy_Order.Choices.COMPLETED:
+            
+            medicine = order.medicine_name  # Get related medicine instance
+            new_quantity = medicine.quantity_to_sell - order.quantity
+            
+            if new_quantity < 0:
+                raise PermissionDenied("Insufficient quantity available for this order.")
+  
+                    
+            # Update the exchange medicine quantity        
+            medicine.quantity_to_sell = new_quantity
+            medicine.save(update_fields=["quantity_to_sell"])
+            
+            # Update the exchange medicine entry
+            exchange_entry = ExchangeMedciene.objects.filter(
+                medicine=medicine, 
+                operation=ExchangeMedciene.Status.SELL).first()
+
+            if exchange_entry:
+                exchange_entry.quantity = new_quantity
+                exchange_entry.save(update_fields=["quantity"])
+            
+        
+        return order
+
     
 class Notification_View(generics.ListAPIView):
     queryset = Notification.objects.all()
