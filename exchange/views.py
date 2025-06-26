@@ -32,7 +32,7 @@ class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
@@ -55,8 +55,8 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
 # 📝 Create a New Buy Order
 class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [PharmacyJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
 
 
 # 🔔 Update Buy Order Status
