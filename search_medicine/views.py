@@ -29,9 +29,7 @@ class OwnerSearchView(generics.ListAPIView):
 
 class ImageSearchView(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    
-    
-    
+
     @extend_schema(
         request={
             'multipart/form-data': {
