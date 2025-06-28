@@ -119,4 +119,18 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         model = Subscription
         fields = ['pharmacy', 'type', 'created_at']
             
+class UserPurchaseSerializer(serializers.ModelSerializer):
     
+    medicine = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Medicine.objects.all()
+    )
+    
+    class Meta:
+        model = UserPurchase
+        fields = ['username', 'email', 'phone_number', 'address', 'medicine', 'created_at']
+        
+    def validate(self, data):
+        if not data.get('username') or not data.get('phone_number'):
+            raise serializers.ValidationError("Username and phone number are required.")
+        return data

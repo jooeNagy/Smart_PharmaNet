@@ -54,3 +54,12 @@ class Subscription(models.Model):
     type = models.CharField(max_length=50, choices=Choices.choices, default=Choices.FREE, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class UserPurchase(models.Model):
+    
+    username = models.CharField(max_length=150, null=False, blank=False)
+    email = models.EmailField(max_length=254, null=False, blank=False)
+    phone_number = models.CharField(max_length=15, null=False, blank=False)
+    address = models.CharField(max_length=255, null=False, blank=False)    
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+

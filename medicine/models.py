@@ -71,7 +71,8 @@ class Medicine(models.Model):
                     "quantity_to_sell": "Cannot exceed available quantity"
                 })
             
-            
+  
+          
 
 
      

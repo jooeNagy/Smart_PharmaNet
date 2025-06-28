@@ -13,7 +13,8 @@ from .serializers import (
     Get_orders_toseller_OrderMedcieneSerializer,
     BuyOrder_update_status_Serializer,
     NotificatoinSerializer,
-    SubscriptionSerializer
+    SubscriptionSerializer,
+    UserPurchaseSerializer
 )
 
 from medicine.models import Medicine
@@ -158,4 +159,7 @@ class SubscriptionView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
 
+class UserPurchaseView(generics.CreateAPIView):
+    serializer_class = UserPurchaseSerializer
+    
     
