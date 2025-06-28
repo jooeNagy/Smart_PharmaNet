@@ -4,6 +4,7 @@ from accounts.models import Pharmacy
 from django.contrib.auth import get_user_model
 from datetime import date
 from django.core.exceptions import ValidationError
+import urllib.parse
 
 User = get_user_model()
 
@@ -70,6 +71,11 @@ class Medicine(models.Model):
                 raise serializers.ValidationError({
                     "quantity_to_sell": "Cannot exceed available quantity"
                 })
+    
+    @property
+    def image_url(self):
+        query = urllib.parse.quote(self.name)
+        return "https://www.pexels.com/api//?medicine,pharmacy"
             
   
           

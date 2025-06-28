@@ -17,7 +17,7 @@ class ChatAPIView(APIView):
         }
 
         data = {
-            "model": "openai/gpt-3.5-turbo",  # or try 'mistralai/mixtral-8x7b'
+            "model": "openai/gpt-4o-mini",  # or try 'mistralai/mixtral-8x7b'
             "messages": [
                 {"role": "system", "content": "You are a helpful assistant for a church youth portal."},
                 {"role": "user", "content": user_input}
@@ -25,10 +25,12 @@ class ChatAPIView(APIView):
         }
 
         try:
-            res = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=data)
+            res = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=data, timeout=15)
             res_json = res.json()
-
-            reply = res_json["choices"][0]["message"]["content"]
-            return Response({"reply": reply})
+            if "choices" in res_json:
+                reply = res_json["choices"][0]["message"]["content"]
+                return Response({"reply": reply})
+            else:
+                return Response({"error": "Unexpected response", "details": res_json}, status=500)           
         except Exception as e:
             return Response({"error": str(e)}, status=500)
