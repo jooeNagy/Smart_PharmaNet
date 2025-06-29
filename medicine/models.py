@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from datetime import date
 from django.core.exceptions import ValidationError
 import urllib.parse
+from .utils import fetch_google_image_url 
 
 User = get_user_model()
 
@@ -24,6 +25,7 @@ class Medicine(models.Model):
     can_be_sell = models.BooleanField(null=False, blank=True, default=False)
     quantity_to_sell = models.IntegerField(null=True, blank=True)  # Fixed: Added blank=True
     price_sell = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
+    image_url = models.URLField(null=True, blank=True)
     
     
     
@@ -51,6 +53,10 @@ class Medicine(models.Model):
         from exchange.models import ExchangeMedciene  # Import here to avoid circular import
 
         self.full_clean()  # Validate fields
+        
+        if not self.image_url:
+            self.image_url = fetch_google_image_url(self.name)
+            
         super().save(*args, **kwargs)  # Save FIRST to ensure ID exists
 
         # Delete exchange entries if can_be_sell=False
@@ -72,10 +78,6 @@ class Medicine(models.Model):
                     "quantity_to_sell": "Cannot exceed available quantity"
                 })
     
-    @property
-    def image_url(self):
-        query = urllib.parse.quote(self.name)
-        return "https://www.pexels.com/api//?medicine,pharmacy"
             
   
           

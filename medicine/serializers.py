@@ -6,38 +6,13 @@ import requests
 from django.conf import settings
 
 
-def get_google_image(query):
-    url = "https://www.googleapis.com/customsearch/v1"
-    params = {
-        "key": settings.GOOGLE_CSE_API_KEY,
-        "cx": settings.GOOGLE_CSE_ID,
-        "q": query,
-        "searchType": "image",
-        "num": 1  # Only need 1 image
-    }
-
-    try:
-        res = requests.get(url, params=params, timeout=10)
-        res.raise_for_status()
-        data = res.json()
-
-        if "items" in data and len(data["items"]) > 0:
-            return data["items"][0]["link"]  # image URL
-    except Exception as e:
-        print("Google CSE image error:", str(e))
-
-    return "https://via.placeholder.com/400x300?text=No+Image"
-
 class MedicineSerializer(serializers.ModelSerializer):
     pharmacy_location = serializers.SerializerMethodField()
-    image_url = serializers.SerializerMethodField()
     class Meta:
         model = Medicine
         fields = '__all__'
         read_only_fields = ['pharmacy_location']
         
-    def get_image_url(self, obj):
-        return get_google_image(obj.name)
         
     @extend_schema_field(serializers.CharField)
     def get_pharmacy_location(self, obj):
@@ -71,9 +46,7 @@ class MedicineSerializer(serializers.ModelSerializer):
             if data['quantity_to_buy'] > data['quantity_to_sell']:
                 raise serializers.ValidationError({
                     "quantity_to_buy": "Cannot exceed available quantity to sell"
-                })
-        
-        
+                }) 
         return data
 
 
