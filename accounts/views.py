@@ -68,20 +68,6 @@ class PharmacyRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         return Pharmacy.objects.filter(owner__user=self.request.user)
         
 
-# class CustomLogoutView(generics.GenericAPIView):
-#     permission_classes = [IsAuthenticated]
-#     def post(self, request):
-#         try:
-#             refresh = request.data.get('refresh')
-#             if not refresh:
-#                 return Response({"error": "Refresh Token is required"}, status=status.HTTP_400_BAD_REQUEST)
-            
-#             token = RefreshToken(refresh)
-#             user = request.user
-#             OutstandingToken.objects.filter(user=user).delete()
-#             return Response({"message": "Successfully logged out!"}, status=status.HTTP_200_OK)
-#         except Exception as e:
-#             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
 
 class LoginPharmacyView(APIView):

@@ -54,7 +54,16 @@ class Medicine(models.Model):
 
         self.full_clean()  # Validate fields
         
-        if not self.image_url:
+        is_new = self._state.adding
+        old_name = None
+        if not is_new:
+            try:
+                old_instance = Medicine.objects.get(pk=self.pk)
+                old_name = old_instance.name
+            except Medicine.DoesNotExist:
+                pass
+        
+        if is_new or (old_name and old_name != self.name):
             self.image_url = fetch_google_image_url(self.name)
             
         super().save(*args, **kwargs)  # Save FIRST to ensure ID exists

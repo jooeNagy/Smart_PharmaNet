@@ -1,4 +1,6 @@
+from django.http import Http404
 from django.shortcuts import render
+from rest_framework.exceptions import PermissionDenied
 from .models import Medicine
 from .serializers import MedicineSerializer
 from rest_framework import generics, status
@@ -8,6 +10,9 @@ from rest_framework.response import Response
 from accounts.models import Owner, Pharmacy
 from drf_spectacular.utils import extend_schema
 from accounts.authentication import PharmacyJWTAuthentication
+from rest_framework.generics import ListAPIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from accounts.permissions import IsOwnerNotStuff
 
 class MedicineCreateReadView(APIView):
     authentication_classes = [PharmacyJWTAuthentication]
@@ -127,3 +132,40 @@ class MedicineRetrieveUpdateDestroy(APIView):
             {"message": "Medicine Deleted Successfully"},
             status=status.HTTP_204_NO_CONTENT
         )
+        
+class OwnerPharmacyMedicineListCreateView(generics.ListCreateAPIView):
+    # authentication_classes = [JWTAuthentication] 
+    permission_classes = [IsAuthenticated, IsOwnerNotStuff]
+    serializer_class = MedicineSerializer
+    
+    def get_queryset(self):
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+        pharmacy = Pharmacy.objects.get(id=pharmacy_id)
+        
+        if pharmacy.owner != self.request.user.owner:
+            raise PermissionDenied("you do not OWN this pharmacy")
+        return Medicine.objects.filter(pharmacy=pharmacy)
+    
+    def perform_create(self, serializer):
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+        pharmacy = Pharmacy.objects.get(id=pharmacy_id)
+        
+        if pharmacy.owner != self.request.user.owner:
+            raise PermissionDenied("you do not OWN this pharmacy")
+        
+        serializer.save(pharmacy=pharmacy)
+        
+        
+class OwnerPharmacyMedicineDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsOwnerNotStuff]
+    serializer_class = MedicineSerializer
+    lookup_field = 'pk'
+    
+    def get_queryset(self):
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+        pharmacy = Pharmacy.objects.get(id=pharmacy_id)
+
+        if pharmacy.owner != self.request.user.owner:
+            raise PermissionDenied("You don't own this pharmacy.")
+        
+        return Medicine.objects.filter(pharmacy=pharmacy)

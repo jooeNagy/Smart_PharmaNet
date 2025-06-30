@@ -25,3 +25,13 @@ class IsOwner(BasePermission):
             raise PermissionDenied("You are not allowed to UPDATE or DELETE as a pharmacy staff!")
         logger.info("Allowing access: Owner detected")
         return request.user == obj.owner.user
+    
+class IsOwnerNotStuff(BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+        if hasattr(request, "pharmacy") and request.pharmacy is not None:
+            raise PermissionDenied("Pharmacy Stuff Not Allowed!")
+        if not hasattr(request.user, "owner"):
+            raise PermissionDenied("Only owners are allowed!")
+        return True

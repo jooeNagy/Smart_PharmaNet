@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from medicine.utils import fetch_google_image_url
 from .models import Medicine
 from datetime import date
 from drf_spectacular.utils import extend_schema_field
@@ -11,7 +13,7 @@ class MedicineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicine
         fields = '__all__'
-        read_only_fields = ['pharmacy_location']
+        read_only_fields = ['pharmacy', 'pharmacy_location']
         
         
     @extend_schema_field(serializers.CharField)
@@ -48,5 +50,16 @@ class MedicineSerializer(serializers.ModelSerializer):
                     "quantity_to_buy": "Cannot exceed available quantity to sell"
                 }) 
         return data
+    def update(self, instance, validated_data):
+        old_name = instance.name
+        new_name = validated_data.get('name', old_name)
 
+        instance = super().update(instance, validated_data)
+
+        # ⚠️ Trigger image update manually if name has changed
+        if new_name != old_name:
+            instance.image_url = fetch_google_image_url(new_name)
+            instance.save()
+
+        return instance
 
