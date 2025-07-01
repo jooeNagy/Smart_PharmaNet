@@ -85,11 +85,4 @@ class Medicine(models.Model):
             else:
                 raise serializers.ValidationError({
                     "quantity_to_sell": "Cannot exceed available quantity"
-                })
-    
-            
-  
-          
-
-
-     
+                })   

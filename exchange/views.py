@@ -33,24 +33,6 @@ class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
     permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        user = self.request.user
-        pharmacy_id = self.kwargs.get("pharmacy_id")
-        if hasattr(self.request, 'pharmacy') and self.request.pharmacy:
-            # Pharmacy staff logic
-            return ExchangeMedciene.objects.filter(medicine__pharmacy=self.request.pharmacy)
-        elif hasattr(user, 'owner'):
-            if pharmacy_id:
-                try:
-                    pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
-                except Pharmacy.DoesNotExist:
-                    raise PermissionDenied("Pharmacy not found or you don't own it.")
-                return ExchangeMedciene.objects.filter(medicine__pharmacy=pharmacy)    
-            # Owner logic - maybe show all their pharmacies' exchange medicines
-            return ExchangeMedciene.objects.filter(medicine__pharmacy__owner=user.owner)
-
-        raise PermissionDenied("Only owners or pharmacy staff are allowed.")
 
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
