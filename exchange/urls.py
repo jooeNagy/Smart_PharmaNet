@@ -5,7 +5,6 @@ from .views import *
 
 urlpatterns = [
         path('exchange_list/', ExchangeMedicineView.as_view()),
-        path('exchange_list/pharmacy/<int:pharmacy_id>/', ExchangeMedicineView.as_view(), name="list-owner"),
         
         path('get/pharmcy_seller/orders/', Get_BuyOrderMedicineView.as_view()),
         path('get/pharmcy_seller/orders/<int:pharmacy_id>/', Get_BuyOrderMedicineView.as_view(), name="seller-owner"),
