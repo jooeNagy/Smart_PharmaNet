@@ -1,5 +1,8 @@
 from django.db import models
-from medicine.models import Medicine, Pharmacy  # Import necessary models
+from medicine.models import Medicine, Pharmacy  
+
+
+
 class ExchangeMedciene(models.Model):
     class Status(models.TextChoices):
         SELL = 'Sell'
@@ -17,8 +20,7 @@ class ExchangeMedciene(models.Model):
         return f"{self.medicine.name} - {self.operation} ({self.quantity})"
     
         
-class Buy_Order(models.Model):
-    
+class Buy_Order(models.Model):   
     class Choices(models.TextChoices):
         PENDING = 'Pending'
         COMPLETED = 'Completed'
@@ -34,16 +36,15 @@ class Buy_Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Notification(models.Model):
-        
+
+class Notification(models.Model):       
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)  # Your current approach
     order = models.ForeignKey(Buy_Order, on_delete=models.CASCADE, null=True, blank=True)
     message = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     
     
-class Subscription(models.Model):
-    
+class Subscription(models.Model):   
     class Choices(models.TextChoices):
         FREE = 'Free'
         PRO = 'Pro'
@@ -54,8 +55,9 @@ class Subscription(models.Model):
     type = models.CharField(max_length=50, choices=Choices.choices, default=Choices.FREE, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-class UserPurchase(models.Model):
-    
+
+
+class UserPurchase(models.Model):   
     username = models.CharField(max_length=150, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     phone_number = models.CharField(max_length=15, null=False, blank=False)

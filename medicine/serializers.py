@@ -56,7 +56,6 @@ class MedicineSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
 
-        # ⚠️ Trigger image update manually if name has changed
         if new_name != old_name:
             instance.image_url = fetch_google_image_url(new_name)
             instance.save()

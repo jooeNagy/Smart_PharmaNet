@@ -3,8 +3,7 @@ from medicine.models import *
 from .models import *
 
 
-class ExchangeMedcieneSerializer(serializers.ModelSerializer):
-    
+class ExchangeMedcieneSerializer(serializers.ModelSerializer):   
     medicine_name = serializers.CharField(source= 'medicine.name', read_only=True)
     medicine_price_to_sell = serializers.CharField(source= 'medicine.price_sell', read_only=True)
     medicine_quantity_to_sell = serializers.CharField(source= 'medicine.quantity_to_sell', read_only=True)
@@ -32,8 +31,10 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
                 {"quantity": "Exceeds available exchange quantity."}
             )
         return data
-class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
     
+    
+    
+class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):   
     medicine_name = serializers.SlugRelatedField(
         slug_field='name',
         queryset=Medicine.objects.all()
@@ -67,6 +68,8 @@ class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
                 )
         return data
 
+
+
 class Get_orders_toseller_OrderMedcieneSerializer(serializers.ModelSerializer):
     med_name = serializers.CharField(source='medicine_name.name', read_only=True)
     pharma_buyer = serializers.CharField(source='pharmacy_buyer.name', read_only=True)
@@ -89,6 +92,8 @@ class Get_orders_toseller_OrderMedcieneSerializer(serializers.ModelSerializer):
                     {"quantity": "Exceeds available exchange quantity."}
                 )
         return data
+  
+  
     
 class BuyOrder_update_status_Serializer(serializers.ModelSerializer):
 
@@ -96,6 +101,7 @@ class BuyOrder_update_status_Serializer(serializers.ModelSerializer):
         model = Buy_Order
         fields = ['status']
         
+
 
 class UpdateMedicineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -111,13 +117,11 @@ class NotificatoinSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     
-    pharmacy = serializers.SlugRelatedField(
-        slug_field='name',
-        queryset=Pharmacy.objects.all()
-    )
     class Meta:
         model = Subscription
         fields = ['pharmacy', 'type', 'created_at']
+        read_only_fields = ['pharmacy']
+      
             
 class UserPurchaseSerializer(serializers.ModelSerializer):
     

@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404  
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
-
 from django.shortcuts import get_object_or_404  
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
-
 from .models import ExchangeMedciene, Buy_Order, Notification, Subscription
 from .serializers import (
     ExchangeMedcieneSerializer,
@@ -16,11 +14,12 @@ from .serializers import (
     SubscriptionSerializer,
     UserPurchaseSerializer
 )
-
 from medicine.models import Medicine
 from medicine.serializers import MedicineSerializer
-
 from accounts.authentication import PharmacyJWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from accounts.models import Pharmacy
+
 
 
 # 🔄 Update / Delete Medicine
@@ -34,6 +33,24 @@ class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+        if hasattr(self.request, 'pharmacy') and self.request.pharmacy:
+            # Pharmacy staff logic
+            return ExchangeMedciene.objects.filter(medicine__pharmacy=self.request.pharmacy)
+        elif hasattr(user, 'owner'):
+            if pharmacy_id:
+                try:
+                    pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+                except Pharmacy.DoesNotExist:
+                    raise PermissionDenied("Pharmacy not found or you don't own it.")
+                return ExchangeMedciene.objects.filter(medicine__pharmacy=pharmacy)    
+            # Owner logic - maybe show all their pharmacies' exchange medicines
+            return ExchangeMedciene.objects.filter(medicine__pharmacy__owner=user.owner)
+
+        raise PermissionDenied("Only owners or pharmacy staff are allowed.")
 
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
@@ -43,13 +60,24 @@ class Get_BuyOrderMedicineView(generics.ListAPIView):
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
+        user = self.request.user
         pharmacy = getattr(self.request, "pharmacy", None)
+        pharmacy_id = self.kwargs.get("pharmacy_id")
 
-        if not pharmacy:
-            raise PermissionDenied("You must be authenticated as a pharmacy to view orders.")
-        elif Buy_Order.objects.filter(pharmacy_seller=pharmacy).count() == 0:
-            raise PermissionDenied("No orders found for this pharmacy.")
-        return Buy_Order.objects.filter(pharmacy_seller=pharmacy)
+        if pharmacy:
+            return Buy_Order.objects.filter(pharmacy_seller=pharmacy)
+
+        elif hasattr(user, 'owner'):
+            if pharmacy_id:
+                try:
+                    pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+                except Pharmacy.DoesNotExist:
+                    raise PermissionDenied("Pharmacy not found or not owned by you.")
+                return Buy_Order.objects.filter(pharmacy_seller=pharmacy)
+
+            return Buy_Order.objects.filter(pharmacy_seller__owner=user.owner)
+
+        raise PermissionDenied("Only authenticated pharmacy staff or owners are allowed.")
 
         
 
@@ -58,6 +86,28 @@ class create_BuyOrderMedicineView(generics.CreateAPIView):
     serializer_class = Create_BuyOrderMedcieneSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        pharmacy = getattr(self.request, "pharmacy", None)
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+
+        # Staff: pharmacy is attached from token
+        if pharmacy:
+            serializer.save(pharmacy_buyer=pharmacy)
+
+        # Owner: pharmacy_id must be passed in URL
+        elif hasattr(user, 'owner'):
+            if not pharmacy_id:
+                raise PermissionDenied("Owner must specify pharmacy_id in URL.")
+            try:
+                pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+            except Pharmacy.DoesNotExist:
+                raise PermissionDenied("Pharmacy not found or not owned by you.")
+            serializer.save(pharmacy_buyer=pharmacy)
+
+        else:
+            raise PermissionDenied("Only authenticated pharmacy staff or owners are allowed.")
 
 
 # 🔔 Update Buy Order Status
@@ -70,13 +120,21 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         order = super().get_object()
         pharmacy = getattr(self.request, "pharmacy", None)
-        if not pharmacy:
-            raise PermissionDenied("Authenticated pharmacy not found.")
-        if order.pharmacy_seller != pharmacy:
-            raise PermissionDenied("You can only update orders for your own pharmacy.")
+        user = self.request.user
+
+        if pharmacy:
+            # Logged in as pharmacy staff
+            if order.pharmacy_seller != pharmacy:
+                raise PermissionDenied("You can only update orders for your own pharmacy.")
+        elif hasattr(user, "owner"):
+            # Logged in as owner
+            if order.pharmacy_seller.owner != user.owner:
+                raise PermissionDenied("You don't own this pharmacy.")
+        else:
+            raise PermissionDenied("Only pharmacy staff or owners are allowed.")
+        
         return order
-    
-    
+       
     def perform_update(self, serializer):
         # Capture current status before update
         old_status = self.get_object().status
@@ -108,8 +166,6 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
     
     def update_order(self, order):
         """Update order and adjust medicine quantities"""
-    
-
         if order.status == Buy_Order.Choices.COMPLETED:
             
             medicine = order.medicine_name  # Get related medicine instance
@@ -137,29 +193,77 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
 
     
 class Notification_View(generics.ListAPIView):
-    queryset = Notification.objects.all()
     serializer_class = NotificatoinSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [PharmacyJWTAuthentication]
 
     def get_queryset(self):
-        pharma_req = getattr(self.request, "pharmacy", None)
+        user = self.request.user
+        pharmacy = getattr(self.request, "pharmacy", None)
+        pharmacy_id = self.kwargs.get("pharmacy_id")  # Optional for owner
 
-        if not pharma_req:
-            raise PermissionDenied("You must be authenticated as a pharmacy to view orders.")
-        
-        if Notification.objects.filter(pharmacy=pharma_req).count() == 0:
-            raise PermissionDenied("No Notifications found for this pharmacy.")
-        
-        return Notification.objects.filter(pharmacy=pharma_req)
+        if pharmacy:
+            # Pharmacy staff access
+            qs = Notification.objects.filter(pharmacy=pharmacy)
+            if not qs.exists():
+                raise PermissionDenied("No notifications found for this pharmacy.")
+            return qs
+
+        elif hasattr(user, 'owner'):
+            # Owner access: either specify a pharmacy_id, or list all
+            if pharmacy_id:
+                try:
+                    pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+                except Pharmacy.DoesNotExist:
+                    raise PermissionDenied("Pharmacy not found or not owned by you.")
+                qs = Notification.objects.filter(pharmacy=pharmacy)
+            else:
+                qs = Notification.objects.filter(pharmacy__owner=user.owner)
+
+            if not qs.exists():
+                raise PermissionDenied("No notifications found for your pharmacies.")
+            return qs
+
+        raise PermissionDenied("Only pharmacy staff or owners can view notifications.")
 
   
 class SubscriptionView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [PharmacyJWTAuthentication]
+    authentication_classes = [JWTAuthentication]  # Supports both owner & staff
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        token = self.request.auth  # This is the JWT token
+        pharmacy_id = self.kwargs.get("pharmacy_id")
+
+        # ✅ Case 1: Staff - pharmacy_id comes from token
+        token_pharmacy_id = None
+        if token and hasattr(token, 'payload'):
+            token_pharmacy_id = token.payload.get("pharmacy_id")
+
+        if token_pharmacy_id:
+            try:
+                pharmacy = Pharmacy.objects.get(id=token_pharmacy_id, owner__user=user)
+                serializer.save(pharmacy=pharmacy)
+                return
+            except Pharmacy.DoesNotExist:
+                raise PermissionDenied("Invalid token: Pharmacy not found or not owned by user.")
+
+        # ✅ Case 2: Owner - pharmacy_id must be passed in URL
+        elif hasattr(user, 'owner'):
+            if not pharmacy_id:
+                raise PermissionDenied("Owner must specify pharmacy_id in the URL.")
+            try:
+                pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+                serializer.save(pharmacy=pharmacy)
+                return
+            except Pharmacy.DoesNotExist:
+                raise PermissionDenied("Pharmacy not found or not owned by you.")
+
+        # ❌ Not allowed
+        raise PermissionDenied("Only pharmacy staff or owners can subscribe.")
+
 
 class UserPurchaseView(generics.CreateAPIView):
     serializer_class = UserPurchaseSerializer
-    
-    
