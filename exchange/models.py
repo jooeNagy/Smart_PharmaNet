@@ -61,5 +61,5 @@ class UserPurchase(models.Model):
     phone_number = models.CharField(max_length=15, null=False, blank=False)
     address = models.CharField(max_length=255, null=False, blank=False)    
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=False, blank=True)
 
