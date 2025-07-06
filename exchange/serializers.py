@@ -11,11 +11,12 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
     pharmacy_name = serializers.CharField(source= 'medicine.pharmacy.name', read_only=True)
     pharmacy_latitude = serializers.CharField(source= 'medicine.pharmacy.latitude', read_only=True)
     pharmacy_longitude = serializers.CharField(source= 'medicine.pharmacy.longitude', read_only=True)  
+    medicine_image = serializers.URLField(source='medicine.image_url', read_only=True)
 
     
     class Meta:
         model = ExchangeMedciene
-        fields = ['medicine_name','medicine_price_to_sell', 'medicine_quantity_to_sell', 'pharmacy_name', 'pharmacy_latitude', 'pharmacy_longitude']
+        fields = ['medicine_name','medicine_price_to_sell', 'medicine_quantity_to_sell', 'pharmacy_name', 'pharmacy_latitude', 'pharmacy_longitude', 'medicine_image']
 
     def validate_quantity(self, value):
         if value <= 0:
