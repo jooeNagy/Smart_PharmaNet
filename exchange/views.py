@@ -142,7 +142,18 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
             order=order,
             message=message
         )
-    
+        
+        # Increment the number of buys for the pharmacy buyer
+        pharmacy_buyer = order.pharmacy_buyer
+        pharmacy_buyer.number_buys += 1
+        pharmacy_buyer.save(update_fields=["number_buys"])
+        
+        
+        pharmacy_seller = order.pharmacy_seller
+        pharmacy_seller.number_sells += 1
+        pharmacy_seller.save(update_fields=["number_sells"])
+        
+        
         
         return notification
     

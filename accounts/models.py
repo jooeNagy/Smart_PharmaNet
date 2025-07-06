@@ -14,6 +14,7 @@ class Owner(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone = models.CharField(max_length=11, null=True)
     nationalID = models.CharField(max_length=14)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     
 
@@ -29,6 +30,9 @@ class Pharmacy(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     license_number = models.CharField(max_length=50)
     password = models.CharField(max_length=128, null=True, blank=True)
+    number_sells = models.IntegerField(default=0)
+    number_buys = models.IntegerField(default=0)
+    
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)

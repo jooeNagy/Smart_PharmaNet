@@ -133,3 +133,28 @@ class CustomLogoutView(generics.GenericAPIView):
                 {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        try:
+            owner = user.owner
+            pharmacies = Pharmacy.objects.filter(owner=owner)
+            num_pharmacies = pharmacies.count()
+            data = {
+                "owner": {
+                    "id": owner.id,
+                    # "name": owner.name,
+                    "email": user.email,
+                    "phone": owner.phone,
+                    "created_at": owner.created_at,
+                    "numberOfpharmacies": num_pharmacies
+                },
+                "pharmacies": PharmacySerializer(pharmacies, many=True).data
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        except Owner.DoesNotExist:
+            return Response({"error": "User has no associated Owner account!"}, status=status.HTTP_400_BAD_REQUEST)

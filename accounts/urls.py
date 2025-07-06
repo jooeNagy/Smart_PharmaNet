@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import OwnerRegisterView, PharmacyCreateView, EmailTokenObtainPairView, LoginPharmacyView, PharmacyRetrieveUpdateDestroy, CustomLogoutView
+from .views import (OwnerRegisterView, PharmacyCreateView, 
+                    EmailTokenObtainPairView, LoginPharmacyView,
+                    PharmacyRetrieveUpdateDestroy, CustomLogoutView, DashboardView)
 from rest_framework_simplejwt.views import TokenRefreshView, TokenBlacklistView
 
 
@@ -11,5 +13,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
     path('pharmacy/login/', LoginPharmacyView.as_view(), name='pharmacy-login'),
     path('logout/', CustomLogoutView.as_view(), name='pharmacy-logout'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
     # path('search/', OwnerSearchView.as_view(), name='owner-search'),
 ]

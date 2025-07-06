@@ -54,7 +54,7 @@ class PharmacySerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, style={"input_type":"password"})
     class Meta:
         model = Pharmacy
-        fields = ['id', 'name', 'city', 'latitude', 'longitude', 'license_number', 'password', 'confirm_password']
+        fields = ['id', 'name', 'city', 'latitude', 'longitude', 'license_number','number_sells','number_buys', 'password', 'confirm_password']
         extra_kwargs = {
             'password': {'write_only': True, 'style':{"input_type":"password"}}
         }
