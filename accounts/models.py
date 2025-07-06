@@ -15,8 +15,7 @@ class Owner(models.Model):
     phone = models.CharField(max_length=11, null=True)
     nationalID = models.CharField(max_length=14)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    
-    
+       
 
     def __str__(self):
         return self.user.username
