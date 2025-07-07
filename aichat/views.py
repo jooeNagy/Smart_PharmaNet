@@ -12,7 +12,7 @@ class ChatAPIView(APIView):
 
         headers = {
             "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
-            "HTTP-Referer": "http://localhost:8000",  # or your domain
+            "HTTP-Referer": "https://smart-pharma-net.vercel.app",  # or your domain
             "X-Title": "Makhdoom Chat Assistant"
         }
 
