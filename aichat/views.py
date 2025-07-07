@@ -9,23 +9,26 @@ class ChatAPIView(APIView):
     def post(self, request):
         user_input = request.data.get('message')
 
+        if not user_input:
+            return Response({"error": "No message provided"}, status=400)
+
         allowed_referers = [
             "https://smart-pharma-net.vercel.app",
             "https://127.0.0.1:8000"
         ]
 
-        # Get referer from the request headers
+        # FIXED: Changed from "http-referer" to "referer"
         request_referer = request.headers.get("referer", "")
         matched_referer = next((r for r in allowed_referers if request_referer.startswith(r)), allowed_referers[0])
 
         headers = {
-            "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",  # Keep it in environment, not hardcoded
-            "HTTP-Referer": matched_referer,
-            "X-Title": "Makhdoom Chat Assistant"
+            "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
+            "Referer": matched_referer,
+            "X-Title": "Makhdoom Chat Assistant",
+            "Content-Type": "application/json"  # Added this header
         }
-
         data = {
-            "model": "openai/gpt-4o-mini",  # You can let users pass a model optionally
+            "model": "openai/gpt-4o-mini",
             "messages": [
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": user_input}
@@ -41,11 +44,21 @@ class ChatAPIView(APIView):
             )
             response_data = response.json()
 
-            if "choices" in response_data:
+            if response.status_code == 200 and "choices" in response_data:
                 reply = response_data["choices"][0]["message"]["content"]
                 return Response({"reply": reply})
             else:
-                return Response({"error": "Unexpected response", "details": response_data}, status=500)
+                error_info = response_data.get("error", {})
+                error_message = error_info.get("message", "Unknown error")
+                error_code = error_info.get("code", response.status_code)
+
+                return Response({
+                    "error": "OpenRouter API returned an error",
+                    "message": error_message,
+                    "code": error_code,
+                    "status_code": response.status_code,
+                    "raw": response_data
+                }, status=response.status_code)
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
