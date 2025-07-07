@@ -36,7 +36,7 @@ CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "
 
 OCR_API_URL = "https://medicine-box-ocr-service-655189461698.us-central1.run.app/ocr"
 OCR_API_KEY = "49uxSMbwpDFun_j4ONmMHl7NlQojQPwTZ0UrQ1pzQf0"
-OPENROUTER_API_KEY = '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'
+OPENROUTER_API_KEY = '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'
 
 GOOGLE_CSE_API_KEY = "AIzaSyCtXfYr7P4lhYaFZaMwSroAL1GipaqKFCg"
 GOOGLE_CSE_ID = "b0865a7d8a50044e2"
