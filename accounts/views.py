@@ -147,7 +147,7 @@ class DashboardView(APIView):
             data = {
                 "owner": {
                     "id": owner.id,
-                    # "name": owner.name,
+                    # "name": user.name,
                     "email": user.email,
                     "phone": owner.phone,
                     "created_at": owner.created_at,

@@ -134,8 +134,8 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
         """Create notification for buyer when status changes"""
         message = (
             f"Your Order #{order.medicine_name.name} from {order.pharmacy_seller.name} pharmacy status changed: "
-            f"{old_status} → {order.status}"
-        )
+            f"{old_status} → {order.status} and will be received on {order.recieve_date.strftime('%A, %Y-%m-%d %H:%M:%S')}"
+        )                                                               
         
         notification = Notification.objects.create(
             pharmacy=order.pharmacy_buyer,  # Set pharmacy to buyer

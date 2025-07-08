@@ -20,6 +20,10 @@ class ExchangeMedciene(models.Model):
         return f"{self.medicine.name} - {self.operation} ({self.quantity})"
     
         
+        
+from datetime import datetime
+
+
 class Buy_Order(models.Model):   
     class Choices(models.TextChoices):
         PENDING = 'Pending'
@@ -31,6 +35,7 @@ class Buy_Order(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pharmacy_seller = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_sold")
     pharmacy_buyer = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name="orders_bought", null=True, blank=True)
+    recieve_date = models.DateTimeField(default=None, null=False, blank=False)
     status = models.CharField(max_length=50, choices=Choices.choices, default=Choices.PENDING, null=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -58,6 +63,12 @@ class Subscription(models.Model):
 
 
 class UserPurchase(models.Model):   
+    
+    class Choices(models.TextChoices):
+        VISA = 'visa'
+        CASH_ON_DELIVERY = 'cash_on_delivery'
+    
+    type_purchase = models.CharField(max_length=50, choices=Choices.choices, default=Choices.CASH_ON_DELIVERY, null=True, blank=False)
     username = models.CharField(max_length=150, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     phone_number = models.CharField(max_length=15, null=False, blank=False)
