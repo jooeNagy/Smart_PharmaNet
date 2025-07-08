@@ -38,11 +38,11 @@ class MedicineCreateReadView(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         data = request.data
-        data['pharmacy'] = pharmacy.id
+        # data['pharmacy'] = pharmacy.id
 
         serializer = MedicineSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(pharmacy=pharmacy)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

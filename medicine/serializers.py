@@ -10,10 +10,11 @@ from django.conf import settings
 
 class MedicineSerializer(serializers.ModelSerializer):
     pharmacy_location = serializers.SerializerMethodField()
+    pharmacy = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Medicine
         fields = '__all__'
-        read_only_fields = ['pharmacy', 'pharmacy_location']
+        read_only_fields = ['pharmacy_location']
         
         
     @extend_schema_field(serializers.CharField)
@@ -50,6 +51,10 @@ class MedicineSerializer(serializers.ModelSerializer):
                     "quantity_to_buy": "Cannot exceed available quantity to sell"
                 }) 
         return data
+    
+    def create(self, validated_data):
+        return super().create(validated_data)
+        
     def update(self, instance, validated_data):
         old_name = instance.name
         new_name = validated_data.get('name', old_name)
