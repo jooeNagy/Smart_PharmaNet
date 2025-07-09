@@ -132,11 +132,11 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
 
     def create_notification(self, order, old_status):
         """Create notification for buyer when status changes"""
-        if(order.status == Buy_Order.Choices.CANCELED):
+        if(order.status == 'Cancelled'):
             message = (
-            f"Your Order #{order.medicine_name.name} from {order.pharmacy_seller.name} pharmacy has been canceled because you can not recieve it on this time" 
-            f"{order.recieve_date.strftime('%A, %Y-%m-%d %H:%M:%S')}"
-        )                                                               
+                    f"Your Order #{order.medicine_name.name} from {order.pharmacy_seller.name} pharmacy has been canceled "
+                    f"because you cannot receive it at this time on {order.recieve_date.strftime('%A, %Y-%m-%d %H:%M:%S')}"
+                )                                                   
         else:
             message = (
                 f"Your Order #{order.medicine_name.name} from {order.pharmacy_seller.name} pharmacy status changed: "
