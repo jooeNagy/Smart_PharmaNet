@@ -42,18 +42,40 @@ class Medicine(models.Model):
         ('Emergency medications', "Emergency medications"),
         ('Herbal and alternative medicines', "Herbal and alternative medicines"),
     ]
-    name = models.CharField(max_length=100)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    name = models.CharField(max_length=100, db_index=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, db_index=True)
     description = models.TextField(max_length=500)
-    price = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
-    quantity = models.PositiveIntegerField()
-    exp_date = models.DateField()
-    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
-    can_be_sell = models.BooleanField(null=False, blank=True, default=False)
+    price = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00, db_index=True)
+    quantity = models.PositiveIntegerField(db_index=True)
+    exp_date = models.DateField(db_index=True)
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, db_index=True)
+    can_be_sell = models.BooleanField(null=False, blank=True, default=False, db_index=True)
     quantity_to_sell = models.IntegerField(null=True, blank=True)
-    price_sell = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
+    price_sell = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00, db_index=True)
     image_url = models.URLField(null=True, blank=True)
     
+    
+    class Meta:
+        indexes = [
+            # Single field indexes
+            models.Index(fields=['name']),
+            models.Index(fields=['category']),
+            models.Index(fields=['price']),
+            models.Index(fields=['quantity']),
+            models.Index(fields=['exp_date']),
+            models.Index(fields=['can_be_sell']),
+            models.Index(fields=['price_sell']),
+            
+            # Composite indexes for common queries
+            models.Index(fields=['name', 'category']),
+            models.Index(fields=['category', 'price']),
+            models.Index(fields=['can_be_sell', 'price_sell']),
+            models.Index(fields=['pharmacy', 'category']),
+            models.Index(fields=['exp_date', 'category']),
+        ]
+        
+        # Add default ordering to avoid sorting overhead
+        ordering = ['id']
     
     
     def __str__(self):

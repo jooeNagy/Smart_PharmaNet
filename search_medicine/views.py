@@ -1,3 +1,4 @@
+from functools import cache
 from math import e
 from rest_framework.response import Response
 from medicine.models import Medicine
@@ -17,16 +18,20 @@ from django.db.models import Q
 from difflib import get_close_matches
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+import time
 
 
 class MedicinePagination(PageNumberPagination):
-    page_size = 20
+    page_size = 10
     page_size_query_param = 'page_size'
-    max_page_size = 100
+    max_page_size = 20
 
+@method_decorator(cache_page(60*5), name='dispatch')
 class OwnerSearchView(generics.ListAPIView): 
     serializer_class = MedicineSerializer
-    queryset = Medicine.objects.all()  
+    queryset = Medicine.objects.select_related('pharmacy').order_by("id")
     filterset_class = SearchFilter
     filter_backends = [DjangoFilterBackend, 
     filters.SearchFilter,
@@ -37,6 +42,24 @@ class OwnerSearchView(generics.ListAPIView):
     pagination_class = MedicinePagination
     permission_classes = [AllowAny]
 
+
+    def get_queryset(self):
+        # Optimize the query with select_related
+        queryset = Medicine.objects.select_related('pharmacy').order_by('id')
+        
+        # Optional: Add logging to monitor performance
+        print(f"Base queryset count: {queryset.count()}")
+        
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        start_time = time.time()
+        response = super().list(request, *args, **kwargs)
+        end_time = time.time()
+        
+        print(f"API response time: {end_time - start_time:.2f} seconds")
+        return response
+    
 class ImageSearchView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
