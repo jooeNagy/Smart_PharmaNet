@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from medicine.models import *
 from .models import *
+from medicine.serializers import *
 
 
 class ExchangeMedcieneSerializer(serializers.ModelSerializer):   
@@ -12,11 +13,10 @@ class ExchangeMedcieneSerializer(serializers.ModelSerializer):
     pharmacy_latitude = serializers.CharField(source= 'medicine.pharmacy.latitude', read_only=True)
     pharmacy_longitude = serializers.CharField(source= 'medicine.pharmacy.longitude', read_only=True)  
     medicine_image = serializers.URLField(source='medicine.image_url', read_only=True)
-
-    
+        
     class Meta:
         model = ExchangeMedciene
-        fields = ['medicine_name','medicine_price_to_sell', 'medicine_quantity_to_sell', 'pharmacy_name', 'pharmacy_latitude', 'pharmacy_longitude', 'medicine_image']
+        fields = ['medicine_name','medicine_price_to_sell', 'medicine_quantity_to_sell', 'pharmacy_name', 'pharmacy_latitude', 'pharmacy_longitude', 'medicine_image', ]
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -51,7 +51,7 @@ class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Buy_Order
-        fields = ['medicine_name','price','pharmacy_seller','pharmacy_buyer', 'quantity', 'status', 'created_at', 'updated_at']
+        fields = ['medicine_name','price','pharmacy_seller','pharmacy_buyer','recieve_date', 'quantity', 'status', 'created_at', 'updated_at']
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -61,12 +61,22 @@ class Create_BuyOrderMedcieneSerializer(serializers.ModelSerializer):
     def validate(self, data):
         medicine = data.get("medicine_name")
         quantity = data.get("quantity")
+        # recieve_date = data.get("recieve_date")
 
         if medicine and hasattr(medicine, 'quantity_to_sell'):
             if quantity > medicine.quantity_to_sell:
                 raise serializers.ValidationError(
                     {"quantity": "Exceeds available exchange quantity."}
                 )
+        
+        # if not recieve_date:
+        #     raise serializers.ValidationError({"recieve_date": "Recieve date is required."})    
+        
+        # from django.utils import timezone
+        # if recieve_date < timezone.now():
+        #     raise serializers.ValidationError({"recieve_date": "Recieve date cannot be in the past."})
+                
+        
         return data
 
 
@@ -133,7 +143,7 @@ class UserPurchaseSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserPurchase
-        fields = ['username', 'email', 'phone_number', 'address', 'medicine', 'created_at']
+        fields = ['username', 'email', 'phone_number', 'address', 'type_purchase', 'medicine', 'created_at']
         
     def validate(self, data):
         if not data.get('username') or not data.get('phone_number'):
