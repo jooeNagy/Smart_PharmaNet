@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'exchange',
     'aichat',
     # 'core',
+    'silk',
 ]
 
 REST_FRAMEWORK = {
