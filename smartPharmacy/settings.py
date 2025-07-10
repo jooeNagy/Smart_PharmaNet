@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'exchange',
     'aichat',
+    # 'core'
 ]
 
 REST_FRAMEWORK = {

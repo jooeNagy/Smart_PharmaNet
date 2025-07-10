@@ -14,6 +14,33 @@ class Medicine(models.Model):
         ('Dental and oral agents', "Dental and oral agents"),
         ('Blood products', "Blood products"),
         ('Antibiotics', "Antibiotics"),
+        ('Analgesics', "Analgesics"),
+        ('Anti-inflammatory drugs', "Anti-inflammatory drugs"),
+        ('Cardiovascular medications', "Cardiovascular medications"),
+        ('Antidiabetic drugs', "Antidiabetic drugs"),
+        ('Antihistamines', "Antihistamines"),
+        ('Antacids and digestive aids', "Antacids and digestive aids"),
+        ('Respiratory medications', "Respiratory medications"),
+        ('Antifungal medications', "Antifungal medications"),
+        ('Antiviral medications', "Antiviral medications"),
+        ('Hormones and hormone modulators', "Hormones and hormone modulators"),
+        ('Vaccines and immunizations', "Vaccines and immunizations"),
+        ('Dermatological preparations', "Dermatological preparations"),
+        ('Ophthalmic preparations', "Ophthalmic preparations"),
+        ('Ear, nose, and throat preparations', "Ear, nose, and throat preparations"),
+        ('Vitamins and minerals', "Vitamins and minerals"),
+        ('Antidepressants', "Antidepressants"),
+        ('Anxiolytics and sedatives', "Anxiolytics and sedatives"),
+        ('Anticonvulsants', "Anticonvulsants"),
+        ('Muscle relaxants', "Muscle relaxants"),
+        ('Diuretics', "Diuretics"),
+        ('Laxatives', "Laxatives"),
+        ('Contraceptives', "Contraceptives"),
+        ('Oncology medications', "Oncology medications"),
+        ('Immunosuppressants', "Immunosuppressants"),
+        ('Anesthetics', "Anesthetics"),
+        ('Emergency medications', "Emergency medications"),
+        ('Herbal and alternative medicines', "Herbal and alternative medicines"),
     ]
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
@@ -23,7 +50,7 @@ class Medicine(models.Model):
     exp_date = models.DateField()
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
     can_be_sell = models.BooleanField(null=False, blank=True, default=False)
-    quantity_to_sell = models.IntegerField(null=True, blank=True)  # Fixed: Added blank=True
+    quantity_to_sell = models.IntegerField(null=True, blank=True)
     price_sell = models.DecimalField(max_digits=8, decimal_places=2, blank=False, null=False, default=0.00)
     image_url = models.URLField(null=True, blank=True)
     
