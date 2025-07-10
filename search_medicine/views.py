@@ -31,7 +31,7 @@ class MedicinePagination(PageNumberPagination):
 @method_decorator(cache_page(60*5), name='dispatch')
 class OwnerSearchView(generics.ListAPIView): 
     serializer_class = MedicineSerializer
-    queryset = Medicine.objects.select_related('pharmacy').order_by("id")
+    queryset = Medicine.objects.all()
     filterset_class = SearchFilter
     filter_backends = [DjangoFilterBackend, 
     filters.SearchFilter,
