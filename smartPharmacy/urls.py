@@ -8,6 +8,11 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('medicine/', include('medicine.urls')),
+    
+    # silk is used to measure the performance of the website respose and queyset in sql and so on
+    path('silk/', include('silk.urls', namespace='silk')),
+    
+    
     path('account/', include('accounts.urls')),
     path('search_medicine/', include('search_medicine.urls')),
     path('chat/', include('aichat.urls')),
