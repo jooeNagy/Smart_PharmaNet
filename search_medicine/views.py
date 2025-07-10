@@ -15,6 +15,14 @@ import requests
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from django.db.models import Q
 from difflib import get_close_matches
+from rest_framework.pagination import PageNumberPagination
+
+
+
+class MedicinePagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class OwnerSearchView(generics.ListAPIView): 
     serializer_class = MedicineSerializer
@@ -26,6 +34,7 @@ class OwnerSearchView(generics.ListAPIView):
     
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'price','quantity']
+    pagination_class = MedicinePagination
 
 class ImageSearchView(APIView):
     parser_classes = (MultiPartParser, FormParser)
