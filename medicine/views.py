@@ -29,7 +29,7 @@ class MedicineCreateReadView(APIView):
         medicines = Medicine.objects.filter(pharmacy=pharmacy).select_related('pharmacy')
         serializer = MedicineSerializer(medicines, many=True)
         return Response(serializer.data)
-           
+    
     def post(self,request):
         pharmacy = request.pharmacy
         if not pharmacy:

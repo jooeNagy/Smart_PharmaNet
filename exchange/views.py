@@ -19,6 +19,9 @@ from medicine.serializers import MedicineSerializer
 from accounts.authentication import PharmacyJWTAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from accounts.models import Pharmacy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 
 
 
@@ -28,11 +31,31 @@ class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
     serializer_class = MedicineSerializer
 
 
+
+from rest_framework.pagination import PageNumberPagination
+
+class CustomPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    
 # 🔁 List All Exchange Requests
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
-    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
+    # permission_classes = [IsAuthenticated]
+
+    @method_decorator(cache_page(60 * 15, key_prefix='exchange_med'))
+    def list(self, request, *args, **kwargs):
+        print("⚡ Fetching exchange medicines from the cache...")
+        return super().list(request, *args, **kwargs)
+
+    def get_queryset(self):
+        print("⏳ Fetching exchange medicines from the database...")
+        import time
+        time.sleep(4)  # Simulate DB delay
+        return super().get_queryset().select_related('medicine')
 
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
