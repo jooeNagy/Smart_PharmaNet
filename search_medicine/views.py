@@ -16,7 +16,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from django.db.models import Q
 from difflib import get_close_matches
 from rest_framework.pagination import PageNumberPagination
-
+from rest_framework.permissions import AllowAny
 
 
 class MedicinePagination(PageNumberPagination):
@@ -35,6 +35,7 @@ class OwnerSearchView(generics.ListAPIView):
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'price','quantity']
     pagination_class = MedicinePagination
+    permission_classes = [AllowAny]
 
 class ImageSearchView(APIView):
     parser_classes = (MultiPartParser, FormParser)
