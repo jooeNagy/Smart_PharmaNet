@@ -44,7 +44,7 @@ class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
     pagination_class = CustomPagination
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @method_decorator(cache_page(60 * 15, key_prefix='exchange_med'))
     def list(self, request, *args, **kwargs):
@@ -54,7 +54,7 @@ class ExchangeMedicineView(generics.ListAPIView):
     def get_queryset(self):
         print("⏳ Fetching exchange medicines from the database...")
         import time
-        time.sleep(4)  # Simulate DB delay
+        # time.sleep(4)  # Simulate DB delay
         return super().get_queryset().select_related('medicine')
 
 

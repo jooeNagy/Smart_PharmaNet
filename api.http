@@ -1,0 +1,172 @@
+POST https://127.0.0.1:8000/exchange/buy/order/ HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDEwOTAwLCJpYXQiOjE3NTIwMTAwMDAsImp0aSI6IjUzYjE4MGRiZTg1MTQ4ODJhODBiMzAzNGM0YWY1NWIzIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.tBE_xGugVs5NwspbXNLy-SqUg-6b-VHBnqxPHgJWbsg
+
+{
+    "medicine_name": "test",
+    "price": 50.0,
+    "pharmacy_seller": "elhamdy",
+    "pharmacy_buyer": "gamal",
+    "recieve_date": "2026-01-01T10:00:00Z",
+    "quantity": 998
+}
+
+
+# gamal
+# "medicine_name": "clavimox",
+#     "medicine_price_to_sell": "12990.00",
+#     "medicine_quantity_to_sell": "1200",
+#     "pharmacy_name": "gamal",
+#     "pharmacy_latitude": "31.244706",
+#     "pharmacy_longitude": "32.324224",
+#     "medicine_image": "https://cdn.supercommerce.io/sally/uploads/145751.webp"
+
+
+  # elhamdy
+  #  "medicine_name": "test",
+  #   "medicine_price_to_sell": "1200.00",
+  #   "medicine_quantity_to_sell": "999",
+  #   "pharmacy_name": "elhamdy",
+  #   "pharmacy_latitude": "31.259262",
+  #   "pharmacy_longitude": "32.284702",
+  #   "medicine_image": "http://admissions.rochester.edu/blog/wp-content/uploads/2015/08/test.png"
+###
+
+
+PUT  https://127.0.0.1:8000/exchange/update_status/219/ HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc5Nzg5LCJpYXQiOjE3NTIwNzg4ODksImp0aSI6ImM1NjA4YzBjNzI1NzQyODdiZWRlN2QxYjFlNDNkOGIxIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.1NkL0ajRDsXm992lCirliRFbW3coKkjfY6yIiWaXPac
+
+
+{
+
+    "status": "Cancelled"
+  
+}
+
+
+###
+
+
+GET  https://127.0.0.1:8000/exchange/exchange_list/ HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDExNzY2LCJpYXQiOjE3NTIwMTA4NjYsImp0aSI6ImFjODY3YmEzM2IwOTQxNzU4NjQwZDNmZTZlMjgwM2RkIiwidXNlcl9pZCI6MjB9.Gkxr0i6kByDHEOLwxl6GcANDjXsOyfelSc-m3xupid8
+
+
+
+
+
+
+###
+
+
+
+GET https://127.0.0.1:8000/exchange/get/pharmcy_seller/orders/ HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc5Nzg5LCJpYXQiOjE3NTIwNzg4ODksImp0aSI6ImM1NjA4YzBjNzI1NzQyODdiZWRlN2QxYjFlNDNkOGIxIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.1NkL0ajRDsXm992lCirliRFbW3coKkjfY6yIiWaXPac
+
+
+###
+
+GET https://127.0.0.1:8000/account/dashboard/ HTTP/1.1
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxODMzODUwLCJpYXQiOjE3NTE4MzI5NTAsImp0aSI6IjhkMWU4OTkzMjYyNjQ4ZWZhN2ZmNGNiZmYyZWY1ZGNhIiwidXNlcl9pZCI6MjB9.rZbtMosFq3NlcOAFca9QSaeNHMcdTmSvtFuYe3l-00Y
+
+
+
+
+###
+
+GET  https://127.0.0.1:8000/exchange/get_notification/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc5OTMxLCJpYXQiOjE3NTIwNzkwMzEsImp0aSI6IjVlMjkxZGQ1NWE4ZDQxZGZiMjQ1ZGNlZjMxNGFhNmM2IiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiNDAifQ.3P79kF4qcZXGjWVlC8fjouh9lbDtvKdmoXRz5XWVupw
+
+
+
+
+###
+
+POST https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "gamal",
+  "password": "123"
+
+}
+
+
+###
+
+POST   https://127.0.0.1:8000/account/pharmacy/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMTI0NTczLCJpYXQiOjE3NTIxMjM2NzMsImp0aSI6ImFmYzEzN2Y2MTE0YTQ4MzFhMGM3MjhiYmQwNmQzNGFiIiwidXNlcl9pZCI6MTd9.VYQK12JXVowdNbj9BFwkLAjEsyzcXBfh8m2630bZaIs
+
+{
+
+  "name": "Dr. joo",
+  "city": "port said",
+  "latitude": "31.259262",
+  "longitude": "32.284702",
+  "license_number": "123456789",
+  "number_sells": 0,
+  "number_buys": 0,
+  "password": "123",
+  "confirm_password": "123"
+}
+
+###
+
+GET https://127.0.0.1:8000/exchange/exchange_list/ HTTP/1.1
+Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMTQ2MzI4LCJpYXQiOjE3NTIxNDU0MjgsImp0aSI6IjhmMTlmMTU3MDM1MjQzNjBiYzNjNmI2M2MzMzZjZGE3IiwidXNlcl9pZCI6MTcsInBoYXJtYWN5X2lkIjoiMjYifQ.svDjdR2pzaQZ7Z7j8W1Zp-jGGEnkI58DDyW33sR4FNs
+
+
+###
+
+
+POST https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Dr. joo",
+  "password": "123"
+
+}
+
+
+###
+
+
+POST  https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMTQ3MjU3LCJpYXQiOjE3NTIxNDYzNTcsImp0aSI6ImViZDQ0ZTE4MzYxYzRjYjlhODY5ODFlZjZiMWQ2MWNlIiwidXNlcl9pZCI6MTcsInBoYXJtYWN5X2lkIjoiMjYifQ.dyejqQfV1W0h5ueDdRAMVqOGpwBRYTmnRepZ9ZIiOwA
+
+
+{
+  "name": "caching_medicine33",
+  "category": "Antibiotics",
+  "price": 50.0,
+  "quantity": 100,
+  "quantity_to_sell":50,
+  "can_be_sell": true,
+  "description":"This is a test medicine for caching purposes.",
+  "exp_date": "2025-12-31"
+}
+
+
+###
+POST https://127.0.0.1:8000/account/owner/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "youss4923@gmail.com",
+  "password": "12345678"
+
+}
+
+
+
+
+
+
