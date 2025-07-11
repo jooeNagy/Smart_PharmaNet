@@ -25,9 +25,6 @@ class MedicineCreateReadView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MedicineSerializer
     
-   
-    
-
     def get(self, request):
         pharmacy = request.pharmacy
         if not pharmacy:
