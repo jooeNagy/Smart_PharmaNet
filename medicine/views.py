@@ -27,6 +27,7 @@ class MedicineCreateReadView(APIView):
     
    
     
+
     def get(self, request):
         pharmacy = request.pharmacy
         if not pharmacy:
