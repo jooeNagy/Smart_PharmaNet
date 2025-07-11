@@ -100,11 +100,11 @@ Content-Type: application/json
 
 POST   https://127.0.0.1:8000/account/pharmacy/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMTI0NTczLCJpYXQiOjE3NTIxMjM2NzMsImp0aSI6ImFmYzEzN2Y2MTE0YTQ4MzFhMGM3MjhiYmQwNmQzNGFiIiwidXNlcl9pZCI6MTd9.VYQK12JXVowdNbj9BFwkLAjEsyzcXBfh8m2630bZaIs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjE0NjE0LCJpYXQiOjE3NTIyMTM3MTQsImp0aSI6IjlmN2Y2ODIzZWM4ODRmNTRhYzZlMjRkMmZhZGZlMDQ4IiwidXNlcl9pZCI6Nn0.c79sh9onRfNnSwe9Obfa4ptEr_6L5iMdKmskuGH6nS4
 
 {
 
-  "name": "Dr. joo",
+  "name": "Dr. youssef",
   "city": "port said",
   "latitude": "31.259262",
   "longitude": "32.284702",
@@ -129,18 +129,34 @@ POST https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Dr. joo",
+  "name": "Dr. youssef",
   "password": "123"
-
 }
-
 
 ###
 
 
-POST  https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
+GET  https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMTQ3MjU3LCJpYXQiOjE3NTIxNDYzNTcsImp0aSI6ImViZDQ0ZTE4MzYxYzRjYjlhODY5ODFlZjZiMWQ2MWNlIiwidXNlcl9pZCI6MTcsInBoYXJtYWN5X2lkIjoiMjYifQ.dyejqQfV1W0h5ueDdRAMVqOGpwBRYTmnRepZ9ZIiOwA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjIwMjk0LCJpYXQiOjE3NTIyMTkzOTQsImp0aSI6ImY5NTNmYWQ3NGUxZjRmNTQ4MTBkMTFmNDkwOWM3MjY2IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.v2QifMsVE7gRZX-2N7nDpd05LHm8jODA1nDhpYtuMsY
+
+
+
+###
+POST https://127.0.0.1:8000/account/pharmacy/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Dr. joo",
+  "password": "123"
+
+}
+###
+
+
+GET  https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjIwMjExLCJpYXQiOjE3NTIyMTkzMTEsImp0aSI6ImY0YWYyY2QwNzM3ZDRkN2M5NDEyOGRjM2I3MWFlMGNmIiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI3In0.tJo4lfLZkLwcKNb_h5JIQErVgpwZpkq8p0xdFT1iMkk
 
 
 {
@@ -156,7 +172,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 
 ###
-POST https://127.0.0.1:8000/account/owner/login/ HTTP/1.1
+
+
+POST https://smart-pharma-net.vercel.app/account/register/ HTTP/1.1
+Content-Type: application/json
+
+
+  {
+    "user": {
+      "first_name": "youssef",
+      "last_name": "Hesham",
+      "username": "joo_elh",
+      "email": "youssef4923@gmail.com",
+      "password": "492003492003"
+    },
+    "gender": "M",
+    "phone": "01276785722",
+    "nationalID": "30309040300398"
+  }
+
+
+
+
+
+###
+POST https://smart-pharma-net.vercel.app/account/owner/login/ HTTP/1.1
 Content-Type: application/json
 
 {

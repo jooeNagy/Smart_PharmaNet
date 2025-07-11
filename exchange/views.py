@@ -50,6 +50,7 @@ class ExchangeMedicineView(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         print("⚡ Fetching exchange medicines from the cache...")
         return super().list(request, *args, **kwargs)
+    
 
     def get_queryset(self):
         print("⏳ Fetching exchange medicines from the database...")

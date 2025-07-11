@@ -8,4 +8,4 @@ def invalidate_exchange_meds_cache(sender, instance, **kwargs):
     
     print("Clearing cache: Echange_list*")
     
-    cache.delete_pattern('*exchange_meds*')
+    cache.delete_pattern('*exchange_med*')
