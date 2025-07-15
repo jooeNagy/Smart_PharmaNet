@@ -1,14 +1,15 @@
 POST https://127.0.0.1:8000/exchange/buy/order/ HTTP/1.1
 Content-Type: application/json
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDEwOTAwLCJpYXQiOjE3NTIwMTAwMDAsImp0aSI6IjUzYjE4MGRiZTg1MTQ4ODJhODBiMzAzNGM0YWY1NWIzIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.tBE_xGugVs5NwspbXNLy-SqUg-6b-VHBnqxPHgJWbsg
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg1ODAzLCJpYXQiOjE3NTI1ODQ5MDMsImp0aSI6IjdmZWVkNDg0ODkyOTQzNDc5NTM5NTVlYjJlMWQwMzI2IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.yqjCJvg4sUdmCBJcYJZu0MQkhYQ4e5YsYy-8K56lqt0
+
 
 {
-    "medicine_name": "test",
+    "medicine_name": "test the orders",
     "price": 50.0,
-    "pharmacy_seller": "elhamdy",
-    "pharmacy_buyer": "gamal",
+    "pharmacy_seller": "Dr. joo",
+    "pharmacy_buyer": "Dr. youssef",
     "recieve_date": "2026-01-01T10:00:00Z",
-    "quantity": 998
+    "quantity": 25
 }
 
 
@@ -33,14 +34,14 @@ Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoi
 ###
 
 
-PUT  https://127.0.0.1:8000/exchange/update_status/219/ HTTP/1.1
+PUT  https://127.0.0.1:8000/exchange/update_status/70/ HTTP/1.1
 Content-Type: application/json
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc5Nzg5LCJpYXQiOjE3NTIwNzg4ODksImp0aSI6ImM1NjA4YzBjNzI1NzQyODdiZWRlN2QxYjFlNDNkOGIxIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.1NkL0ajRDsXm992lCirliRFbW3coKkjfY6yIiWaXPac
+Authorization:  Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg4Mzg0LCJpYXQiOjE3NTI1ODc0ODQsImp0aSI6IjMwNjFmZGY0OTQ3ZDQyNDA4ZmExZGMyYWQ2MDBiOWU1IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI3In0.eTL3nly6197Pe7Gnl4M4XoYGT9hPvTZ5jKZQ5Ez1DEg
 
 
 {
 
-    "status": "Cancelled"
+    "status": "Completed"
   
 }
 
@@ -63,7 +64,7 @@ Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoi
 
 GET https://127.0.0.1:8000/exchange/get/pharmcy_seller/orders/ HTTP/1.1
 Content-Type: application/json
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc5Nzg5LCJpYXQiOjE3NTIwNzg4ODksImp0aSI6ImM1NjA4YzBjNzI1NzQyODdiZWRlN2QxYjFlNDNkOGIxIiwidXNlcl9pZCI6MjAsInBoYXJtYWN5X2lkIjoiMzgifQ.1NkL0ajRDsXm992lCirliRFbW3coKkjfY6yIiWaXPac
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg4Mzg0LCJpYXQiOjE3NTI1ODc0ODQsImp0aSI6IjMwNjFmZGY0OTQ3ZDQyNDA4ZmExZGMyYWQ2MDBiOWU1IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI3In0.eTL3nly6197Pe7Gnl4M4XoYGT9hPvTZ5jKZQ5Ez1DEg
 
 
 ###
@@ -119,7 +120,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET https://127.0.0.1:8000/exchange/exchange_list/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjIwMjk0LCJpYXQiOjE3NTIyMTkzOTQsImp0aSI6ImY5NTNmYWQ3NGUxZjRmNTQ4MTBkMTFmNDkwOWM3MjY2IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.v2QifMsVE7gRZX-2N7nDpd05LHm8jODA1nDhpYtuMsY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg1NTUxLCJpYXQiOjE3NTI1ODQ2NTEsImp0aSI6IjAyZjg3NjllZGUzNzQ0NGE5ZDQ0MmQ5NmZiNDE4YTZmIiwidXNlcl9pZCI6Nn0.--tdTzyPVeKTT43lPK5WDZ9dIgDaUP5Mv7Sq3U1lC2U
 
 
 ###
@@ -136,9 +137,18 @@ Content-Type: application/json
 ###
 
 
+GET https://127.0.0.1:8000/exchange/get_orders_request/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg4NTA5LCJpYXQiOjE3NTI1ODc2MDksImp0aSI6IjUyZDJiM2E0NzFmNzQwNjM4MzliZmFlYTM0OTRmZTUzIiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.5m78ZG5uO53cItdlwjKUfF9Ofo2hBhRMbJoT_PwCEmY
+
+
+
+###
+
+
 GET  https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjIwMjk0LCJpYXQiOjE3NTIyMTkzOTQsImp0aSI6ImY5NTNmYWQ3NGUxZjRmNTQ4MTBkMTFmNDkwOWM3MjY2IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.v2QifMsVE7gRZX-2N7nDpd05LHm8jODA1nDhpYtuMsY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg1NjU5LCJpYXQiOjE3NTI1ODQ3NTksImp0aSI6ImFkMTVjMTA5ZDkyYTQ3NjZiMTc4MDkyNjY2Y2ViOWJkIiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI4In0.Dr94-03m-eTiIZogISTwtLJrPiitsG5hFh-XIysFOec
 
 
 
@@ -156,11 +166,11 @@ Content-Type: application/json
 
 GET   https://127.0.0.1:8000/medicine/medicines/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMjI0Mjg4LCJpYXQiOjE3NTIyMjMzODgsImp0aSI6IjQyMzQyM2E3OWUzMzQwOTBhZTFmZTM3NmU3MTVjMjc5IiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI3In0.tMqlkI9EaUSkhxTktzb__hBjLlXKZbO4eG7R6KbZn2Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNTg1NzQ1LCJpYXQiOjE3NTI1ODQ4NDUsImp0aSI6ImFlNzA3MGMzODZlYjQyOTQ5MjZlMzgxMTZjMGJiNzQyIiwidXNlcl9pZCI6NiwicGhhcm1hY3lfaWQiOiI3In0.bXNTfasvR0T6i_sTcSZTVjaSd06-9zJ519vC-t8JdyE
 
 
 {
-  "name": "post in meddd",
+  "name": "test the orders",
   "category": "Antibiotics",
   "price": 50.0,
   "quantity": 100,
@@ -196,7 +206,7 @@ Content-Type: application/json
 
 
 ###
-POST https://smart-pharma-net.vercel.app/account/owner/login/ HTTP/1.1
+POST https://127.0.0.1:8000/account/owner/login/ HTTP/1.1
 Content-Type: application/json
 
 {

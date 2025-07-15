@@ -111,7 +111,15 @@ class BuyOrder_update_status_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Buy_Order
         fields = ['status']
-        
+
+
+class MyordersSerializer(serializers.ModelSerializer):
+    pharmay_buyer = serializers.CharField(source='pharmacy_buyer.name', read_only=True)
+    med_name = serializers.CharField(source='medicine_name.name', read_only=True)
+    
+    class Meta: 
+        model = Buy_Order
+        fields = ['pharmay_buyer', 'med_name', 'price', 'status', 'created_at']
 
 
 class UpdateMedicineSerializer(serializers.ModelSerializer):
@@ -125,15 +133,7 @@ class NotificatoinSerializer(serializers.ModelSerializer):
         model = Notification
         fields = '__all__'
         
-class MyOrdersSerializer(serializers.ModelSerializer):
-    pharmay_seller = serializers.CharField(source='order.pharmacy_seller', read_only=True)
-    name = serializers.CharField(source='order.medicine_name', read_only=True)
-    price = serializers.DecimalField(source='order.price',read_only=True)
-    status = serializers.CharField(source='order.status', read_only=True)
-    class Meta:
-        model = Notification
-        fields = ['pharmay_seller', 'name', 'price','status', 'created_at']
-        
+
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     

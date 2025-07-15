@@ -17,8 +17,8 @@ urlpatterns = [
         path('get_notification/', Notification_View.as_view()), 
         path('get_notification/pharmacy/<int:pharmacy_id>/', Notification_View.as_view()),    
         
-        path('get_orders/', MyOrdersView.as_view()), 
-        path('get_orders/pharmacy/<int:pharmacy_id>/', MyOrdersView.as_view()),  
+        path('get_orders_request/', MyOrderRequestView.as_view()), 
+        path('get_orders_request/pharmacy/<int:pharmacy_id>/', MyOrderRequestView.as_view()),  
            
         path('subscripe/', SubscriptionView.as_view()),           
         path('subscripe/pharmacy/<int:pharmacy_id>/', SubscriptionView.as_view()), 
