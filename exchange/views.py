@@ -206,6 +206,43 @@ class Notification_updatestatusView(generics.RetrieveUpdateAPIView):
         return order
 
     
+from .serializers import MyOrdersSerializer
+class MyOrdersView(generics.ListAPIView):
+    serializer_class = MyOrdersSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [PharmacyJWTAuthentication]
+
+    def get_queryset(self):
+        user = self.request.user
+        pharmacy = getattr(self.request, "pharmacy", None)
+        pharmacy_id = self.kwargs.get("pharmacy_id")  # Optional for owner
+
+        if pharmacy:
+            # Pharmacy staff access
+            qs = Notification.objects.filter(pharmacy=pharmacy)
+            if not qs.exists():
+                raise PermissionDenied("No orders found for this pharmacy.")
+            return qs
+
+        elif hasattr(user, 'owner'):
+            # Owner access: either specify a pharmacy_id, or list all
+            if pharmacy_id:
+                try:
+                    pharmacy = Pharmacy.objects.get(id=pharmacy_id, owner=user.owner)
+                except Pharmacy.DoesNotExist:
+                    raise PermissionDenied("Pharmacy not found or not owned by you.")
+                qs = Notification.objects.filter(pharmacy=pharmacy)
+            else:
+                qs = Notification.objects.filter(pharmacy__owner=user.owner)
+
+            if not qs.exists():
+                raise PermissionDenied("No orders found for your pharmacies.")
+            return qs
+
+        raise PermissionDenied("Only pharmacy staff or owners can view orders.")
+    
+    
+    
 class Notification_View(generics.ListAPIView):
     serializer_class = NotificatoinSerializer
     permission_classes = [IsAuthenticated]

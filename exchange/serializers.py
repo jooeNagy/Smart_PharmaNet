@@ -125,6 +125,15 @@ class NotificatoinSerializer(serializers.ModelSerializer):
         model = Notification
         fields = '__all__'
         
+class MyOrdersSerializer(serializers.ModelSerializer):
+    pharmay_seller = serializers.CharField(source='order.pharmacy_seller', read_only=True)
+    name = serializers.CharField(source='order.medicine_name', read_only=True)
+    price = serializers.DecimalField(source='order.price',read_only=True)
+    status = serializers.CharField(source='order.status', read_only=True)
+    class Meta:
+        model = Notification
+        fields = ['pharmay_seller', 'name', 'price','status', 'created_at']
+        
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     
