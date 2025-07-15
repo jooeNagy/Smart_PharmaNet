@@ -33,27 +33,22 @@ class MedicineRetrieveUpdateDestroyView(generics.UpdateAPIView):
 
 
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import generics, filters
-
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 20
 
-# ✅ View with Search + Pagination
+# 🔁 List All Exchange Requests
 class ExchangeMedicineView(generics.ListAPIView):
     queryset = ExchangeMedciene.objects.all()
     serializer_class = ExchangeMedcieneSerializer
     pagination_class = CustomPagination
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['medicine__name', 'medicine__category']  # adjust as needed
+
 
     def get_queryset(self):
         return super().get_queryset().select_related('medicine')
-    
-
 
 # 📦 Get All Orders Made to the Authenticated Pharmacy Seller
 class Get_BuyOrderMedicineView(generics.ListAPIView):  
