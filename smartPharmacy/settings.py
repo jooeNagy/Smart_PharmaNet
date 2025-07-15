@@ -34,12 +34,12 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"
 
-OCR_API_URL = "https://medicine-box-ocr-service-655189461698.us-central1.run.app/ocr"
-OCR_API_KEY = "49uxSMbwpDFun_j4ONmMHl7NlQojQPwTZ0UrQ1pzQf0"
+OCR_API_URL = os.getenv("OCR_API_URL")
+OCR_API_KEY = os.getenv("OCR_API_KEY")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
-GOOGLE_CSE_API_KEY = "AIzaSyCtXfYr7P4lhYaFZaMwSroAL1GipaqKFCg"
-GOOGLE_CSE_ID = "b0865a7d8a50044e2"
+GOOGLE_CSE_API_KEY = os.getenv("GOOGLE_CSE_API_KEY")
+GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
 
 # Vercel Configuration
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
