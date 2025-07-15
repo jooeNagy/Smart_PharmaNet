@@ -46,16 +46,10 @@ class ExchangeMedicineView(generics.ListAPIView):
     pagination_class = CustomPagination
     permission_classes = [IsAuthenticated]
 
-    @method_decorator(cache_page(60 * 15, key_prefix='exchange_med'))
-    def list(self, request, *args, **kwargs):
-        print("⚡ Fetching exchange medicines from the cache...")
-        return super().list(request, *args, **kwargs)
     
 
+
     def get_queryset(self):
-        print("⏳ Fetching exchange medicines from the database...")
-        import time
-        # time.sleep(4)  # Simulate DB delay
         return super().get_queryset().select_related('medicine')
 
 

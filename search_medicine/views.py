@@ -39,7 +39,7 @@ class OwnerSearchView(generics.ListAPIView):
     
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'price','quantity']
-    pagination_class = MedicinePagination
+    # pagination_class = MedicinePagination
     permission_classes = [AllowAny]
 
 
