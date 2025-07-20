@@ -49,8 +49,8 @@ Smart PharmaNet is designed to help pharmacies across a region collaborate by:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/smart-pharmanet.git
-cd smart-pharmanet
+git clone https://github.com/jooeNagy/Smart_PharmaNet.git
+cd smartPharmanet
 
 # Create virtual environment
 python -m venv venv
