@@ -2,7 +2,7 @@
 
 ![Smart PharmaNet Screenshot](https://raw.githubusercontent.com/jooeNagy/Smart_PharmaNet/main/screenshots/image.png)
 
-## 🌐 Live Demo : [Click here to try the live demo](https://dashboard-509e8.web.app)
+🌐 Live Demo : [Click here to try the live demo](https://dashboard-509e8.web.app)
 
 An AI-powered medicine exchange platform for pharmacies, built with Django REST Framework. This system helps pharmacies share surplus or unused medicine and leverage AI features to streamline search and communication.
 
